@@ -27,9 +27,10 @@
     "serverpause.mixins.json"
   ],
   "depends": {
-    "fabricloader": ">=0.11.3",
+    "fabricloader": ">=0.7.4",
     "fabric": "*",
-    "minecraft": "1.18.x",
-    "java": ">=17"
+    "minecraft": "1.17.x",
+    "java": ">=16",
+    "completeconfig": ">=1.2.0"
   }
 }
