@@ -3,18 +3,18 @@ package me.ichun.mods.serverpause.loader.forge;
 import me.ichun.mods.serverpause.common.network.AbstractPacket;
 import me.ichun.mods.serverpause.common.network.PacketChannel;
 import net.minecraft.client.Minecraft;
-import net.minecraft.resources.ResourceLocation;
-import net.minecraft.server.level.ServerLevel;
-import net.minecraft.server.level.ServerPlayer;
-import net.minecraft.world.entity.Entity;
-import net.minecraft.world.entity.player.Player;
+import net.minecraft.entity.Entity;
+import net.minecraft.entity.player.PlayerEntity;
+import net.minecraft.entity.player.ServerPlayerEntity;
+import net.minecraft.util.ResourceLocation;
+import net.minecraft.world.server.ServerWorld;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
-import net.minecraftforge.fmllegacy.network.NetworkDirection;
-import net.minecraftforge.fmllegacy.network.NetworkEvent;
-import net.minecraftforge.fmllegacy.network.NetworkRegistry;
-import net.minecraftforge.fmllegacy.network.PacketDistributor;
-import net.minecraftforge.fmllegacy.network.simple.SimpleChannel;
+import net.minecraftforge.fml.network.NetworkDirection;
+import net.minecraftforge.fml.network.NetworkEvent;
+import net.minecraftforge.fml.network.NetworkRegistry;
+import net.minecraftforge.fml.network.PacketDistributor;
+import net.minecraftforge.fml.network.simple.SimpleChannel;
 
 import java.util.function.Predicate;
 
@@ -70,7 +70,7 @@ public class PacketChannelForge extends PacketChannel
     }
 
     @Override
-    public void sendTo(AbstractPacket packet, ServerPlayer player)
+    public void sendTo(AbstractPacket packet, ServerPlayerEntity player)
     {
         channel.sendTo(new PacketHolder(packet), player.connection.getConnection(), NetworkDirection.PLAY_TO_CLIENT);
     }
@@ -88,13 +88,13 @@ public class PacketChannelForge extends PacketChannel
     }
 
     @Override
-    public void sendToAround(AbstractPacket packet, ServerLevel world, double x, double y, double z, double radius)
+    public void sendToAround(AbstractPacket packet, ServerWorld world, double x, double y, double z, double radius)
     {
         channel.send(PacketDistributor.NEAR.with(PacketDistributor.TargetPoint.p(x, y, z, radius, world.dimension())), packet);
     }
 
     @OnlyIn(Dist.CLIENT)
-    public static Player getPlayer()
+    public static PlayerEntity getPlayer()
     {
         return Minecraft.getInstance().player;
     }

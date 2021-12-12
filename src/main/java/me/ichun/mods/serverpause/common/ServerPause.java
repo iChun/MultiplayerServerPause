@@ -7,8 +7,8 @@ import me.ichun.mods.serverpause.common.network.AbstractPacket;
 import me.ichun.mods.serverpause.common.network.PacketChannel;
 import me.ichun.mods.serverpause.common.network.packet.PacketClientPause;
 import me.ichun.mods.serverpause.common.network.packet.PacketServerPause;
-import net.minecraft.resources.ResourceLocation;
 import net.minecraft.server.MinecraftServer;
+import net.minecraft.util.ResourceLocation;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 

@@ -2,8 +2,8 @@ package me.ichun.mods.serverpause.loader.forge;
 
 import me.ichun.mods.serverpause.common.core.EventHandlerServer;
 import net.minecraftforge.event.entity.player.PlayerEvent;
-import net.minecraftforge.fmlserverevents.FMLServerStartingEvent;
-import net.minecraftforge.fmlserverevents.FMLServerStoppingEvent;
+import net.minecraftforge.fml.event.server.FMLServerStartingEvent;
+import net.minecraftforge.fml.event.server.FMLServerStoppingEvent;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
 
 public class EventHandlerServerForge extends EventHandlerServer

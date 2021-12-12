@@ -8,8 +8,8 @@ public class EventHandlerServerFabric extends EventHandlerServer
 {
     public EventHandlerServerFabric()
     {
-        ServerPlayConnectionEvents.INIT.register((handler, server) -> onPlayerLogin(handler.getPlayer()));
-        ServerPlayConnectionEvents.DISCONNECT.register((handler, server) -> onPlayerLogout(handler.getPlayer()));
+        ServerPlayConnectionEvents.INIT.register((handler, server) -> onPlayerLogin(handler.player));
+        ServerPlayConnectionEvents.DISCONNECT.register((handler, server) -> onPlayerLogout(handler.player));
 
         ServerLifecycleEvents.SERVER_STARTING.register(server -> resetServer(server, true));
         ServerLifecycleEvents.SERVER_STOPPING.register(server -> resetServer(server, false));

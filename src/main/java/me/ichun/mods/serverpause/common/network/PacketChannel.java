@@ -1,10 +1,10 @@
 package me.ichun.mods.serverpause.common.network;
 
 import it.unimi.dsi.fastutil.objects.Object2ByteOpenHashMap;
-import net.minecraft.resources.ResourceLocation;
-import net.minecraft.server.level.ServerLevel;
-import net.minecraft.server.level.ServerPlayer;
-import net.minecraft.world.entity.Entity;
+import net.minecraft.entity.Entity;
+import net.minecraft.entity.player.ServerPlayerEntity;
+import net.minecraft.util.ResourceLocation;
+import net.minecraft.world.server.ServerWorld;
 
 public abstract class PacketChannel
 {
@@ -27,12 +27,12 @@ public abstract class PacketChannel
 
     public abstract void sendToServer(AbstractPacket packet);
 
-    public abstract void sendTo(AbstractPacket packet, ServerPlayer player);
+    public abstract void sendTo(AbstractPacket packet, ServerPlayerEntity player);
 
     public abstract void sendToAll(AbstractPacket packet);
 
     public abstract void sendToTracking(AbstractPacket packet, Entity entity);
 
-    public abstract void sendToAround(AbstractPacket packet, ServerLevel world, double x, double y, double z, double radius);
+    public abstract void sendToAround(AbstractPacket packet, ServerWorld world, double x, double y, double z, double radius);
 
 }

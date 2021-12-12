@@ -2,8 +2,8 @@ package me.ichun.mods.serverpause.common.network.packet;
 
 import me.ichun.mods.serverpause.common.ServerPause;
 import me.ichun.mods.serverpause.common.network.AbstractPacket;
-import net.minecraft.network.FriendlyByteBuf;
-import net.minecraft.world.entity.player.Player;
+import net.minecraft.entity.player.PlayerEntity;
+import net.minecraft.network.PacketBuffer;
 
 import java.util.Optional;
 
@@ -19,19 +19,19 @@ public class PacketClientPause extends AbstractPacket
     }
 
     @Override
-    public void writeTo(FriendlyByteBuf buf)
+    public void writeTo(PacketBuffer buf)
     {
         buf.writeBoolean(pauseState);
     }
 
     @Override
-    public void readFrom(FriendlyByteBuf buf)
+    public void readFrom(PacketBuffer buf)
     {
         pauseState = buf.readBoolean();
     }
 
     @Override
-    public Optional<Runnable> process(Player player)
+    public Optional<Runnable> process(PlayerEntity player)
     {
         return Optional.of(() -> ServerPause.eventHandlerServer.updatePlayerState(player, pauseState));
     }

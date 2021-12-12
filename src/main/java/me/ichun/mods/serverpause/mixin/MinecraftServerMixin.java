@@ -1,9 +1,9 @@
 package me.ichun.mods.serverpause.mixin;
 
 import me.ichun.mods.serverpause.common.ServerPause;
+import net.minecraft.profiler.IProfiler;
 import net.minecraft.server.MinecraftServer;
 import net.minecraft.server.dedicated.DedicatedServer;
-import net.minecraft.util.profiling.ProfilerFiller;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.spongepowered.asm.mixin.Mixin;
@@ -28,7 +28,7 @@ public abstract class MinecraftServerMixin
         boolean isServerPaused = ServerPause.eventHandlerServer.serverPaused;
         ServerPause.eventHandlerServer.serverPaused = ServerPause.eventHandlerServer.isPaused;
 
-        ProfilerFiller profilerFiller = server.getProfiler();
+        IProfiler profilerFiller = server.getProfiler();
         if (!isServerPaused && ServerPause.eventHandlerServer.serverPaused) {
             profilerFiller.push("autoSave");
             LOGGER.info("Saving and pausing game...");

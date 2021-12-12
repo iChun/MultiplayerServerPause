@@ -20,9 +20,7 @@ public class LoaderFabric extends ServerPause
         //register config
         ConfigFabric configFabric = new ConfigFabric();
         config = configFabric;
-        Config modConfig = new Config(MOD_ID, new String[]{MOD_ID}, configFabric);
-        modConfig.load();
-        Runtime.getRuntime().addShutdownHook(new Thread(modConfig::save));
+		Config.builder(MOD_ID).setBranch(new String[]{MOD_ID}).add(configFabric).saveOnExit().build();
     }
 
     @Override
