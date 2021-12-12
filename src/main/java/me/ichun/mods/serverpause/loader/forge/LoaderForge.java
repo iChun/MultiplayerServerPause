@@ -33,7 +33,6 @@ public class LoaderForge extends ServerPause
         ModLoadingContext.get().registerConfig(ModConfig.Type.COMMON, configBuilder.build());
     }
 
-    @OnlyIn(Dist.CLIENT)
     private void onClientSetup(FMLClientSetupEvent event)
     {
         MinecraftForge.EVENT_BUS.register(eventHandlerClient = new EventHandlerClientForge());
