@@ -1,6 +1,7 @@
 package me.ichun.mods.serverpause.loader.forge;
 
 import me.ichun.mods.serverpause.common.core.EventHandlerServer;
+import net.minecraftforge.event.RegisterCommandsEvent;
 import net.minecraftforge.event.entity.player.PlayerEvent;
 import net.minecraftforge.event.server.ServerStartingEvent;
 import net.minecraftforge.event.server.ServerStoppingEvent;
@@ -30,5 +31,11 @@ public class EventHandlerServerForge extends EventHandlerServer
     public void onServerStopping(ServerStoppingEvent event)
     {
         resetServer(event.getServer(), false);
+    }
+
+    @SubscribeEvent
+    public void onRegisterCommands(RegisterCommandsEvent event)
+    {
+        registerPauseCommand(event.getDispatcher());
     }
 }

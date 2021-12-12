@@ -8,6 +8,7 @@ issueTrackerURL="https://github.com/iChun/MultiplayerServerPause/issues"
     version="${file.jarVersion}" #mandatory
     displayName="Multiplayer Server Pause"
     displayURL="https://github.com/iChun/MultiplayerServerPause"
+    logoFile="icon.png"
     authors="iChun"
     description='''
     Pauses servers when all connected clients are paused.

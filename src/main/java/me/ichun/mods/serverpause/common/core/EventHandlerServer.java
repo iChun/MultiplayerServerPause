@@ -1,8 +1,10 @@
 package me.ichun.mods.serverpause.common.core;
 
+import com.mojang.brigadier.CommandDispatcher;
 import me.ichun.mods.serverpause.common.ServerPause;
 import me.ichun.mods.serverpause.common.network.packet.PacketServerPause;
 import net.minecraft.Util;
+import net.minecraft.commands.CommandSourceStack;
 import net.minecraft.network.chat.ChatType;
 import net.minecraft.network.chat.TextComponent;
 import net.minecraft.network.chat.TranslatableComponent;
@@ -21,10 +23,21 @@ public abstract class EventHandlerServer
 
     public boolean serverPaused; //instance of the server's last pause state
 
+    public boolean forcePause;
+    public boolean wasForcePaused;
+
     public void onPlayerLogin(Player player)
     {
         pauseState.put(player.getGameProfile().getId(), false);
         checkAndUpdatePauseState();
+        if(isPaused)
+        {
+            ServerPause.channel.sendTo(new PacketServerPause(true), (ServerPlayer)player);
+            if(!(!ServerPause.modProxy.getServer().isDedicatedServer() && pauseState.size() == 1) && (forcePause || wasForcePaused || ServerPause.config.sendChatMessageWhenPauseStateChanges.get()))
+            {
+                ((ServerPlayer)player).sendMessage(new TranslatableComponent("serverpause.message.paused"), ChatType.SYSTEM, Util.NIL_UUID);
+            }
+        }
     }
 
     public void onPlayerLogout(Player player)
@@ -39,14 +52,27 @@ public abstract class EventHandlerServer
         checkAndUpdatePauseState();
     }
 
+    public void registerPauseCommand(CommandDispatcher<CommandSourceStack> dispatcher)
+    {
+        PauseCommand.register(dispatcher);
+    }
+
+    public void toggleForcePause()
+    {
+        wasForcePaused = forcePause;
+        forcePause = !forcePause;
+
+        checkAndUpdatePauseState(); //sets wasForcePause to false;
+    }
+
     public void checkAndUpdatePauseState()
     {
         boolean shouldPause = true;
         if(pauseState.isEmpty())
         {
-            shouldPause = ServerPause.config.pauseWhenNoPlayers.get() && ServerPause.modProxy.getServer() != null && ServerPause.modProxy.getServer().isDedicatedServer(); //DO NOT PAUSE INTEGRATED SERVERS WITH NO PLAYERS
+            shouldPause = (forcePause || ServerPause.config.pauseWhenNoPlayers.get()) && ServerPause.modProxy.getServer() != null && ServerPause.modProxy.getServer().isDedicatedServer(); //DO NOT PAUSE INTEGRATED SERVERS WITH NO PLAYERS
         }
-        else
+        else if(!forcePause)
         {
             for(Map.Entry<UUID, Boolean> e : pauseState.entrySet())
             {
@@ -64,7 +90,7 @@ public abstract class EventHandlerServer
 
             ServerPause.channel.sendToAll(new PacketServerPause(isPaused));
 
-            if(!(!ServerPause.modProxy.getServer().isDedicatedServer() && pauseState.size() == 1) && ServerPause.config.sendChatMessageWhenPauseStateChanges.get())
+            if(!(!ServerPause.modProxy.getServer().isDedicatedServer() && pauseState.size() == 1) && (forcePause || wasForcePaused || ServerPause.config.sendChatMessageWhenPauseStateChanges.get()))
             {
                 ServerPause.modProxy.getServer().sendMessage(new TextComponent(isPaused ? "Server paused." : "Server unpaused."), Util.NIL_UUID);
                 TranslatableComponent chat = new TranslatableComponent(isPaused ? "serverpause.message.paused" : "serverpause.message.unpaused");
@@ -74,6 +100,7 @@ public abstract class EventHandlerServer
                 }
             }
         }
+        wasForcePaused = false;
     }
 
     public void resetServer(MinecraftServer server, boolean starting)
@@ -81,5 +108,6 @@ public abstract class EventHandlerServer
         pauseState.clear();
         isPaused = starting && ServerPause.config.pauseWhenNoPlayers.get() && server.isDedicatedServer(); //DO NOT PAUSE INTEGRATED SERVERS WITH NO PLAYERS
         serverPaused = false;
+        forcePause = wasForcePaused = false;
     }
 }

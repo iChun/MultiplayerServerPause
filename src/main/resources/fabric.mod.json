@@ -13,6 +13,7 @@
   },
 
   "license": "GNU Lesser General Public License v3.0",
+  "icon": "icon.png",
 
   "environment": "*",
   "entrypoints": {

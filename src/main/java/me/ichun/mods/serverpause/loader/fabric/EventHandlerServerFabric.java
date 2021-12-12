@@ -1,6 +1,7 @@
 package me.ichun.mods.serverpause.loader.fabric;
 
 import me.ichun.mods.serverpause.common.core.EventHandlerServer;
+import net.fabricmc.fabric.api.command.v1.CommandRegistrationCallback;
 import net.fabricmc.fabric.api.event.lifecycle.v1.ServerLifecycleEvents;
 import net.fabricmc.fabric.api.networking.v1.ServerPlayConnectionEvents;
 
@@ -13,5 +14,7 @@ public class EventHandlerServerFabric extends EventHandlerServer
 
         ServerLifecycleEvents.SERVER_STARTING.register(server -> resetServer(server, true));
         ServerLifecycleEvents.SERVER_STOPPING.register(server -> resetServer(server, false));
+
+        CommandRegistrationCallback.EVENT.register((dispatcher, dedicated) -> registerPauseCommand(dispatcher));
     }
 }
