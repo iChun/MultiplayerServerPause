@@ -50,7 +50,9 @@ dependencies {
 }
 
 loom {
-	refmapName "${project.mod_id}.refmap.json"
+	mixin {
+		defaultRefmapName = "${project.mod_id}.refmap.json"
+	}
 }
 
 sourceSets {
