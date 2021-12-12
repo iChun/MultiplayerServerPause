@@ -1,0 +1,7 @@
+{
+  "config.serverpause.general.pauseWhenNoPlayers": "Set to true to pause the server when no players are connected.",
+  "config.serverpause.general.sendChatMessageWhenPauseStateChanges": "Set to true to send a chat message to all players when the server pause state changes.",
+
+  "serverpause.message.paused": "Server paused.",
+  "serverpause.message.unpaused": "Server unpaused."
+}

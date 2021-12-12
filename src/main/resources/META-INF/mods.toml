@@ -1,0 +1,27 @@
+modLoader="javafml"
+loaderVersion="[38,)" #forge version dep
+license="GNU Lesser General Public License v3.0"
+issueTrackerURL="https://github.com/iChun/MultiplayerServerPause/issues"
+
+[[mods]]
+    modId="serverpause"
+    version="${file.jarVersion}" #mandatory
+    displayName="Multiplayer Server Pause"
+    displayURL="https://github.com/iChun/MultiplayerServerPause"
+    authors="iChun"
+    description='''
+    Pauses servers when all connected clients are paused.
+    '''
+
+[[dependencies.serverpause]]
+    modId="forge"
+    mandatory=true
+    versionRange="[38,)"
+    ordering="NONE"
+    side="BOTH"
+[[dependencies.serverpause]]
+    modId="minecraft"
+    mandatory=true
+    versionRange="[1.18,1.19)"
+    ordering="NONE"
+    side="BOTH"

@@ -1,0 +1,17 @@
+{
+  "required": true,
+  "minVersion": "0.8",
+  "package": "me.ichun.mods.serverpause.mixin",
+  "compatibilityLevel": "JAVA_16",
+  "refmap": "serverpause.refmap.json",
+  "mixins": [
+    "MinecraftServerAccessorMixin",
+    "MinecraftServerMixin"
+  ],
+  "client": [
+    "MinecraftMixin"
+  ],
+  "injectors": {
+    "defaultRequire": 1
+  }
+}
