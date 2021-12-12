@@ -32,7 +32,7 @@ public abstract class MinecraftServerMixin
         if (!isServerPaused && ServerPause.eventHandlerServer.serverPaused) {
             profilerFiller.push("autoSave");
             LOGGER.info("Saving and pausing game...");
-            server.saveEverything(false, false, false);
+            server.saveAllChunks(false, false, false);
             profilerFiller.pop();
         }
 
