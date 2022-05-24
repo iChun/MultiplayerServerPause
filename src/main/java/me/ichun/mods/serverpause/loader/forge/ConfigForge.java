@@ -9,6 +9,9 @@ public class ConfigForge extends Config
     {
         builder.push("general");
 
+        final ForgeConfigSpec.BooleanValue configPauseWhenAllPlayersPaused = builder.comment("Set to true to pause the server when all connected players are paused.").define("pauseWhenAllPlayersPaused", true);
+        pauseWhenAllPlayersPaused = new ConfigWrapper<>(configPauseWhenAllPlayersPaused::get, configPauseWhenAllPlayersPaused::set, configPauseWhenAllPlayersPaused::save);
+
         final ForgeConfigSpec.BooleanValue configPauseWhenNoPlayers = builder.comment("Set to true to pause the server when no players are connected.").define("pauseWhenNoPlayers", false);
         pauseWhenNoPlayers = new ConfigWrapper<>(configPauseWhenNoPlayers::get, configPauseWhenNoPlayers::set, configPauseWhenNoPlayers::save);
 

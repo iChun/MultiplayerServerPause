@@ -13,6 +13,7 @@ public class ConfigFabric extends Config
 
     public ConfigFabric()
     {
+        pauseWhenAllPlayersPaused = new ConfigWrapper<>(() -> INSTANCE_GENERAL.pauseWhenAllPlayersPaused, v -> INSTANCE_GENERAL.pauseWhenAllPlayersPaused = v);
         pauseWhenNoPlayers = new ConfigWrapper<>(() -> INSTANCE_GENERAL.pauseWhenNoPlayers, v -> INSTANCE_GENERAL.pauseWhenNoPlayers = v);
         sendChatMessageWhenPauseStateChanges = new ConfigWrapper<>(() -> INSTANCE_GENERAL.sendChatMessageWhenPauseStateChanges, v -> INSTANCE_GENERAL.sendChatMessageWhenPauseStateChanges = v);
     }
@@ -26,6 +27,8 @@ public class ConfigFabric extends Config
             INSTANCE_GENERAL = this;
         }
 
+        @ConfigEntry(comment = "Set to true to pause the server when all connected players are paused.")
+        public boolean pauseWhenAllPlayersPaused = true;
         @ConfigEntry(comment = "Set to true to pause the server when no players are connected.")
         public boolean pauseWhenNoPlayers = false;
         @ConfigEntry(comment = "Set to true to send a chat message to all players (and to the server log) when the server pause state changes.")

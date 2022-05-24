@@ -5,6 +5,7 @@ import java.util.function.Supplier;
 
 public abstract class Config
 {
+    public ConfigWrapper<Boolean> pauseWhenAllPlayersPaused;
     public ConfigWrapper<Boolean> pauseWhenNoPlayers;
     public ConfigWrapper<Boolean> sendChatMessageWhenPauseStateChanges;
 

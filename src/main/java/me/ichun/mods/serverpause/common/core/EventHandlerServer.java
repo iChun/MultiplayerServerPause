@@ -67,12 +67,12 @@ public abstract class EventHandlerServer
 
     public void checkAndUpdatePauseState()
     {
-        boolean shouldPause = true;
+        boolean shouldPause = ServerPause.config.pauseWhenAllPlayersPaused.get();
         if(pauseState.isEmpty())
         {
             shouldPause = (forcePause || ServerPause.config.pauseWhenNoPlayers.get()) && ServerPause.modProxy.getServer() != null && ServerPause.modProxy.getServer().isDedicatedServer(); //DO NOT PAUSE INTEGRATED SERVERS WITH NO PLAYERS
         }
-        else if(!forcePause)
+        else if(!forcePause && ServerPause.config.pauseWhenAllPlayersPaused.get())
         {
             for(Map.Entry<UUID, Boolean> e : pauseState.entrySet())
             {
