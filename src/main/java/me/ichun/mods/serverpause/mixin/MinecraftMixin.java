@@ -12,7 +12,7 @@ public abstract class MinecraftMixin
     //Thanks https://github.com/SpongePowered/Mixin/issues/209 for being reference to how I figured out @ModifyVariable
     @ModifyVariable(method = "runTick", //Method to check
             at = @At("STORE"),
-            ordinal = 1, //second matching local variable of our matching type (boolean) (the method args counts as one as well)
+            ordinal = 2, //third matching local variable of our matching type (boolean) (the method args counts as one as well)
             require = 1 //require at least 1 success
     )
     private boolean onPauseCheck(boolean pause)

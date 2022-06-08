@@ -3,11 +3,9 @@ package me.ichun.mods.serverpause.common.core;
 import com.mojang.brigadier.CommandDispatcher;
 import me.ichun.mods.serverpause.common.ServerPause;
 import me.ichun.mods.serverpause.common.network.packet.PacketServerPause;
-import net.minecraft.Util;
 import net.minecraft.commands.CommandSourceStack;
-import net.minecraft.network.chat.ChatType;
-import net.minecraft.network.chat.TextComponent;
-import net.minecraft.network.chat.TranslatableComponent;
+import net.minecraft.network.chat.Component;
+import net.minecraft.network.chat.MutableComponent;
 import net.minecraft.server.MinecraftServer;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.entity.player.Player;
@@ -35,7 +33,7 @@ public abstract class EventHandlerServer
             ServerPause.channel.sendTo(new PacketServerPause(true), (ServerPlayer)player);
             if(!(!ServerPause.modProxy.getServer().isDedicatedServer() && pauseState.size() == 1) && (forcePause || wasForcePaused || ServerPause.config.sendChatMessageWhenPauseStateChanges.get()))
             {
-                ((ServerPlayer)player).sendMessage(new TranslatableComponent("serverpause.message.paused"), ChatType.SYSTEM, Util.NIL_UUID);
+                ((ServerPlayer)player).sendSystemMessage(Component.translatable("serverpause.message.paused"));
             }
         }
     }
@@ -92,11 +90,11 @@ public abstract class EventHandlerServer
 
             if(!(!ServerPause.modProxy.getServer().isDedicatedServer() && pauseState.size() == 1) && (forcePause || wasForcePaused || ServerPause.config.sendChatMessageWhenPauseStateChanges.get()))
             {
-                ServerPause.modProxy.getServer().sendMessage(new TextComponent(isPaused ? "Server paused." : "Server unpaused."), Util.NIL_UUID);
-                TranslatableComponent chat = new TranslatableComponent(isPaused ? "serverpause.message.paused" : "serverpause.message.unpaused");
+                ServerPause.modProxy.getServer().sendSystemMessage(Component.literal(isPaused ? "Server paused." : "Server unpaused."));
+                MutableComponent chat = Component.translatable(isPaused ? "serverpause.message.paused" : "serverpause.message.unpaused");
                 for(ServerPlayer player : ServerPause.modProxy.getServer().getPlayerList().getPlayers())
                 {
-                    player.sendMessage(chat, ChatType.SYSTEM, Util.NIL_UUID);
+                    player.sendSystemMessage(chat);
                 }
             }
         }

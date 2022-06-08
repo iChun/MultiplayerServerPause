@@ -1,5 +1,5 @@
 plugins {
-	id 'fabric-loom' version '0.10-SNAPSHOT'
+	id 'fabric-loom' version '0.12-SNAPSHOT'
 	id 'maven-publish'
 }
 
@@ -36,17 +36,18 @@ repositories {
 dependencies {
 	// To change the versions see the gradle.properties file
 	minecraft "com.mojang:minecraft:${project.minecraft_version}"
-	mappings loom.layered() {
-		officialMojangMappings()
-		parchment("org.parchmentmc.data:parchment-1.17.1:2021.12.05@zip")
-	}
+	//mappings loom.layered() {
+	//	officialMojangMappings()
+	//	parchment("org.parchmentmc.data:parchment-1.17.1:2021.12.05@zip")
+	//}
+	mappings loom.officialMojangMappings()
 	modImplementation "net.fabricmc:fabric-loader:${project.loader_version}"
 
 	// Fabric API. This is technically optional, but you probably want it anyway.
 	modImplementation "net.fabricmc.fabric-api:fabric-api:${project.fabric_version}"
 
 	// Complete Config dep
-	modImplementation "com.gitlab.Lortseam:completeconfig:${project.completeconfig_version}"
+	modImplementation "com.gitlab.Lortseam.completeconfig:gui-cloth:${project.completeconfig_version}"
 }
 
 loom {

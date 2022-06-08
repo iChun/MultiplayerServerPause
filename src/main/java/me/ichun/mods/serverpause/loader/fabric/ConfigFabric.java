@@ -19,7 +19,7 @@ public class ConfigFabric extends Config
     }
 
     @Transitive
-    @ConfigEntries
+    @ConfigEntries(includeAll = true)
     public static class General implements ConfigGroup
     {
         public General()
