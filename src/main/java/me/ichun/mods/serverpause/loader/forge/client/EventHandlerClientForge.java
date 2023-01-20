@@ -17,13 +17,13 @@ public class EventHandlerClientForge extends EventHandlerClient
     }
 
     @SubscribeEvent
-    public void onClientConnect(ClientPlayerNetworkEvent.LoggedInEvent event)
+    public void onClientConnect(ClientPlayerNetworkEvent.LoggingIn event)
     {
         onClientServerConnectionChange();
     }
 
     @SubscribeEvent
-    public void onClientDisconnect(ClientPlayerNetworkEvent.LoggedOutEvent event)
+    public void onClientDisconnect(ClientPlayerNetworkEvent.LoggingOut event)
     {
         onClientServerConnectionChange();
     }

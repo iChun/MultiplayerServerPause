@@ -12,13 +12,13 @@ public class EventHandlerServerForge extends EventHandlerServer
     @SubscribeEvent
     public void onPlayerLogin(PlayerEvent.PlayerLoggedInEvent event)
     {
-        onPlayerLogin(event.getPlayer());
+        onPlayerLogin(event.getEntity());
     }
 
     @SubscribeEvent
     public void onPlayerLogout(PlayerEvent.PlayerLoggedOutEvent event)
     {
-        onPlayerLogout(event.getPlayer());
+        onPlayerLogout(event.getEntity());
     }
 
     @SubscribeEvent
