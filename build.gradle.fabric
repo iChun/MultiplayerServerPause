@@ -1,5 +1,5 @@
 plugins {
-	id 'fabric-loom' version '0.12-SNAPSHOT'
+	id 'fabric-loom' version '1.0-SNAPSHOT'
 	id 'maven-publish'
 }
 
@@ -16,10 +16,6 @@ repositories {
 	// Loom adds the essential maven repositories to download Minecraft and libraries from automatically.
 	// See https://docs.gradle.org/current/userguide/declaring_repositories.html
 	// for more information about repositories.
-	maven {
-		name = 'Parchment'
-		url = 'https://maven.parchmentmc.org'
-	}
 
 	// Complete Config repos
 	maven {
@@ -31,26 +27,35 @@ repositories {
 	maven {
 		url "https://maven.shedaniel.me/"
 	}
+	maven {
+		url "https://maven.siphalor.de/"
+	}
+	maven {
+		url "https://maven.isxander.dev/releases"
+	}
 }
 
 dependencies {
 	// To change the versions see the gradle.properties file
 	minecraft "com.mojang:minecraft:${project.minecraft_version}"
-	//mappings loom.layered() {
-	//	officialMojangMappings()
-	//	parchment("org.parchmentmc.data:parchment-1.17.1:2021.12.05@zip")
-	//}
 	mappings loom.officialMojangMappings()
 	modImplementation "net.fabricmc:fabric-loader:${project.loader_version}"
 
 	// Fabric API. This is technically optional, but you probably want it anyway.
 	modImplementation "net.fabricmc.fabric-api:fabric-api:${project.fabric_version}"
 
+	// Uncomment the following line to enable the deprecated Fabric API modules. 
+	// These are included in the Fabric API production distribution and allow you to update your mod to the latest modules at a later more convenient time.
+
+	// modImplementation "net.fabricmc.fabric-api:fabric-api-deprecated:${project.fabric_version}"
+
 	// Complete Config dep
-	modImplementation "com.gitlab.Lortseam.completeconfig:gui-cloth:${project.completeconfig_version}"
+	modImplementation "com.github.Lortseam.completeconfig:gui-cloth:${project.completeconfig_version}"
 }
 
+//If there's mixins
 loom {
+//	accessWidenerPath = file("src/main/resources/${project.mod_id}.accesswidener")
 	mixin {
 		defaultRefmapName = "${project.mod_id}.refmap.json"
 	}
@@ -59,6 +64,7 @@ loom {
 sourceSets {
 	main {
 		java {
+            exclude "me/ichun/mods/${project.mod_id}/api/forge/**"
 			exclude "me/ichun/mods/${project.mod_id}/loader/forge/**"
 		}
 	}
@@ -72,6 +78,7 @@ processResources {
 	}
 	
 	exclude("META-INF/mods.toml")
+	exclude("META-INF/accesstransformer.cfg")
 }
 
 tasks.withType(JavaCompile).configureEach {

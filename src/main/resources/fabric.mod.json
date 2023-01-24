@@ -32,6 +32,6 @@
     "fabric": "*",
     "minecraft": "1.19.x",
     "java": ">=17",
-    "completeconfig-base": ">=2.0.0"
+    "completeconfig-base": ">=2.2.0"
   }
 }

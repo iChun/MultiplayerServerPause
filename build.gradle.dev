@@ -1,12 +1,12 @@
 plugins {
-	id 'fabric-loom' version '0.12-SNAPSHOT'
+	id 'fabric-loom' version '1.0-SNAPSHOT'
 	id 'maven-publish'
 }
 
 sourceCompatibility = JavaVersion.VERSION_17
 targetCompatibility = JavaVersion.VERSION_17
 
-archivesBaseName = project.archives_base_name
+archivesBaseName = "${project.archives_base_name}-${project.minecraft_version}-Fabric"
 version = project.mod_version
 group = project.maven_group
 
@@ -16,15 +16,6 @@ repositories {
 	// Loom adds the essential maven repositories to download Minecraft and libraries from automatically.
 	// See https://docs.gradle.org/current/userguide/declaring_repositories.html
 	// for more information about repositories.
-	maven {
-		name = 'Parchment'
-		url = 'https://maven.parchmentmc.org'
-	}
-
-	maven {
-		name = 'Forge'
-		url = 'https://repo.spongepowered.org/repository/maven-public/'
-	}
 
 	// Complete Config repos
 	maven {
@@ -36,6 +27,12 @@ repositories {
 	maven {
 		url "https://maven.shedaniel.me/"
 	}
+	maven {
+		url "https://maven.siphalor.de/"
+	}
+	maven {
+		url "https://maven.isxander.dev/releases"
+	}
 }
 
 dependencies {
@@ -43,24 +40,36 @@ dependencies {
 	minecraft "com.mojang:minecraft:${project.minecraft_version}"
 	mappings loom.layered() {
 		officialMojangMappings()
-		parchment("org.parchmentmc.data:parchment-1.17.1:2021.12.05@zip")
+		parchment("org.parchmentmc.data:parchment-${project.minecraft_version}:${project.parchment_version}@zip")
 	}
 	modImplementation "net.fabricmc:fabric-loader:${project.loader_version}"
 
 	// Fabric API. This is technically optional, but you probably want it anyway.
 	modImplementation "net.fabricmc.fabric-api:fabric-api:${project.fabric_version}"
 
+	// Uncomment the following line to enable the deprecated Fabric API modules. 
+	// These are included in the Fabric API production distribution and allow you to update your mod to the latest modules at a later more convenient time.
+
+	// modImplementation "net.fabricmc.fabric-api:fabric-api-deprecated:${project.fabric_version}"
+
 	// Complete Config dep
-	modImplementation "com.gitlab.Lortseam:completeconfig:${project.completeconfig_version}"
+	modImplementation "com.github.Lortseam.completeconfig:gui-cloth:${project.completeconfig_version}"
 
 	// Forge Deps. For dependency libraries required at compile, you'll have to add an implementation for them as well.
 	implementation "net.minecraftforge:forge:${project.forge_version}:universal"
 	implementation "net.minecraftforge:javafmllanguage:${project.forge_version}"
 	implementation "net.minecraftforge:fmlcore:${project.forge_version}"
-	implementation "net.minecraftforge:eventbus:5.0.3"
-	implementation "net.minecraftforge:mergetool:1.1.3:api"
-	implementation "com.electronwill.night-config:core:3.6.3"
+	implementation "net.minecraftforge:eventbus:${project.forge_event_bus_version}"
+	implementation "net.minecraftforge:mergetool:${project.forge_merge_tool_version}:api"
+	implementation "com.electronwill.night-config:core:${project.nightconfig_core_version}"
 }
+
+//If there's mixins
+//loom {
+//	mixin {
+//		defaultRefmapName = "${project.mod_id}.refmap.json"
+//	}
+//}
 
 processResources {
 	inputs.property "version", project.version
