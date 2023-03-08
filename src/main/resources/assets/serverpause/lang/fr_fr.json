@@ -1,0 +1,11 @@
+{
+  "config.serverpause.general.pauseWhenNoPlayers": "Définir sur true pour mettre le serveur en pause lorsqu'aucun joueur n'est connecté.",
+  "config.serverpause.general.sendChatMessageWhenPauseStateChanges": "Définir sur true pour envoyer un message dans le chat à tous les joueurs lorsque l'état de pause du serveur change.",
+
+  "commands.pause.alreadyPaused": "Serveur déjà en pause !",
+  "commands.pause.pausing": "Serveur en entrain d'être mis en pause...",
+  "commands.pause.unpausing": "Reprise du serveur...",
+
+  "serverpause.message.paused": "Serveur en pause.",
+  "serverpause.message.unpaused": "Serveur réactivé."
+}
