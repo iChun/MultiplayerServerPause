@@ -1,12 +1,8 @@
 plugins {
-	id 'fabric-loom' version '1.0-SNAPSHOT'
+	id 'fabric-loom' version '1.2-SNAPSHOT'
 	id 'maven-publish'
 }
 
-sourceCompatibility = JavaVersion.VERSION_17
-targetCompatibility = JavaVersion.VERSION_17
-
-archivesBaseName = "${project.archives_base_name}-${project.minecraft_version}-Fabric"
 version = project.mod_version
 group = project.maven_group
 
@@ -70,6 +66,10 @@ sourceSets {
 	}
 }
 
+base {
+	archivesName = "${project.archives_base_name}-${project.minecraft_version}-Fabric"
+}
+
 processResources {
 	inputs.property "version", project.version
 
@@ -91,6 +91,9 @@ java {
 	// if it is present.
 	// If you remove this line, sources will not be generated.
 	//withSourcesJar()
+
+	sourceCompatibility = JavaVersion.VERSION_17
+	targetCompatibility = JavaVersion.VERSION_17
 }
 
 jar {

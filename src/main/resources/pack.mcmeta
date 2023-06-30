@@ -1,7 +1,10 @@
 {
    "pack": {
-      "description": "Multiplayer Server Pause",
-      "pack_format": 12,
+      "description": {
+         "text": "Multiplayer Server Pause"
+      },
+      "pack_format": 13,
+      "forge:server_data_pack_format": 12,
       "forge:resource_pack_format": 12,
       "forge:data_pack_format": 10
    }

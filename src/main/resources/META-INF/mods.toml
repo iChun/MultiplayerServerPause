@@ -1,5 +1,5 @@
 modLoader="javafml"
-loaderVersion="[41,)" #forge version dep
+loaderVersion="[45,)" #forge version dep
 license="GNU Lesser General Public License v3.0"
 issueTrackerURL="https://github.com/iChun/MultiplayerServerPause/issues"
 
@@ -17,12 +17,12 @@ issueTrackerURL="https://github.com/iChun/MultiplayerServerPause/issues"
 [[dependencies.serverpause]]
     modId="forge"
     mandatory=true
-    versionRange="[41,)"
+    versionRange="[45,)"
     ordering="NONE"
     side="BOTH"
 [[dependencies.serverpause]]
     modId="minecraft"
     mandatory=true
-    versionRange="[1.19,1.20)"
+    versionRange="[1.19.4,1.20)"
     ordering="NONE"
     side="BOTH"

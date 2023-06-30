@@ -72,7 +72,7 @@ public class PacketChannelForge extends PacketChannel
     @Override
     public void sendTo(AbstractPacket packet, ServerPlayer player)
     {
-        channel.sendTo(new PacketHolder(packet), player.connection.getConnection(), NetworkDirection.PLAY_TO_CLIENT);
+        channel.sendTo(new PacketHolder(packet), player.connection.connection, NetworkDirection.PLAY_TO_CLIENT);
     }
 
     @Override
