@@ -3,8 +3,6 @@ package me.ichun.mods.serverpause.loader.forge;
 import me.ichun.mods.serverpause.common.ServerPause;
 import me.ichun.mods.serverpause.loader.forge.client.EventHandlerClientForge;
 import net.minecraft.server.MinecraftServer;
-import net.minecraftforge.api.distmarker.Dist;
-import net.minecraftforge.api.distmarker.OnlyIn;
 import net.minecraftforge.common.ForgeConfigSpec;
 import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.fml.ModLoadingContext;

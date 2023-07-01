@@ -11,6 +11,8 @@ public class ConfigFabric extends Config
 {
     private static General INSTANCE_GENERAL = null;
 
+    public me.lortseam.completeconfig.data.Config configInstance;
+
     public ConfigFabric()
     {
         pauseWhenAllPlayersPaused = new ConfigWrapper<>(() -> INSTANCE_GENERAL.pauseWhenAllPlayersPaused, v -> INSTANCE_GENERAL.pauseWhenAllPlayersPaused = v);
@@ -27,11 +29,11 @@ public class ConfigFabric extends Config
             INSTANCE_GENERAL = this;
         }
 
-        @ConfigEntry(comment = "Set to true to pause the server when all connected players are paused.")
+        @ConfigEntry(nameKey = "general.pauseWhenNoPlayers.name", descriptionKey = "general.pauseWhenNoPlayers", comment = "Set to true to pause the server when all connected players are paused.")
         public boolean pauseWhenAllPlayersPaused = true;
-        @ConfigEntry(comment = "Set to true to pause the server when no players are connected.")
+        @ConfigEntry(nameKey = "general.pauseWhenNoPlayers.name", descriptionKey = "general.pauseWhenNoPlayers", comment = "Set to true to pause the server when no players are connected.")
         public boolean pauseWhenNoPlayers = false;
-        @ConfigEntry(comment = "Set to true to send a chat message to all players (and to the server log) when the server pause state changes.")
+        @ConfigEntry(nameKey = "general.sendChatMessageWhenPauseStateChanges.name", descriptionKey = "general.sendChatMessageWhenPauseStateChanges", comment = "Set to true to send a chat message to all players (and to the server log) when the server pause state changes.")
         public boolean sendChatMessageWhenPauseStateChanges = false;
     }
 }

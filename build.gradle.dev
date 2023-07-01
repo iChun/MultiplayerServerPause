@@ -56,6 +56,7 @@ dependencies {
 
 	// Complete Config dep
 	// modImplementation "com.gitlab.Lortseam:completeconfig:base:${project.completeconfig_version}"
+	modImplementation "com.terraformersmc:modmenu:${project.modmenu_version}"
 	modImplementation "com.github.Lortseam.completeconfig:gui-cloth:${project.completeconfig_version}"
 
 	// Forge Deps. For dependency libraries required at compile, you'll have to add an implementation for them as well.

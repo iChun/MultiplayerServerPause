@@ -46,6 +46,7 @@ dependencies {
 	// modImplementation "net.fabricmc.fabric-api:fabric-api-deprecated:${project.fabric_version}"
 
 	// Complete Config dep
+	modImplementation "com.terraformersmc:modmenu:${project.modmenu_version}"
 	modImplementation "com.github.Lortseam.completeconfig:gui-cloth:${project.completeconfig_version}"
 }
 

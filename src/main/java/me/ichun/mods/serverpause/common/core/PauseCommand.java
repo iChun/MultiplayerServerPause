@@ -19,7 +19,7 @@ public class PauseCommand
                     {
                         throw ALREADY_PAUSED.create();
                     }
-                    context.getSource().sendSuccess(Component.translatable(ServerPause.eventHandlerServer.forcePause ? "commands.pause.unpausing" : "commands.pause.pausing"), true);
+                    context.getSource().sendSuccess(() -> Component.translatable(ServerPause.eventHandlerServer.forcePause ? "commands.pause.unpausing" : "commands.pause.pausing"), true);
                     ServerPause.eventHandlerServer.toggleForcePause();
                     return Command.SINGLE_SUCCESS;
                 })
