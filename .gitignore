@@ -1,5 +1,6 @@
 # eclipse
 bin
+eclipse
 *.launch
 .settings
 .metadata
@@ -23,7 +24,6 @@ logs
 build.gradle
 
 # other
-eclipse
 run
 
 # java

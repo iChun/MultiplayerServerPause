@@ -19,7 +19,7 @@ public abstract class ServerPause
 
     private static final Logger LOGGER = LogManager.getLogger();
 
-    public static final String NETWORK_PROTOCOL = "1";
+    public static final int NETWORK_PROTOCOL = 1;
     public static final Class<? extends AbstractPacket>[] PACKET_TYPES = new Class[] {
             PacketClientPause.class,
             PacketServerPause.class

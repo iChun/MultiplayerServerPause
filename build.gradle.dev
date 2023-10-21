@@ -1,10 +1,14 @@
 plugins {
-	id 'fabric-loom' version '1.2-SNAPSHOT'
+	id 'fabric-loom' version '1.3-SNAPSHOT'
 	id 'maven-publish'
 }
 
 version = project.mod_version
 group = project.maven_group
+
+base {
+	archivesName = "${project.archives_base_name}-${project.minecraft_version}-Fabric"
+}
 
 repositories {
 	// Add repositories to retrieve artifacts from in here.
@@ -12,10 +16,17 @@ repositories {
 	// Loom adds the essential maven repositories to download Minecraft and libraries from automatically.
 	// See https://docs.gradle.org/current/userguide/declaring_repositories.html
 	// for more information about repositories.
-
+	maven {
+		name = 'Forge'
+		url = 'https://maven.minecraftforge.net/'
+	}
+	maven {
+		name = 'ParchmentMC'
+		url = 'https://maven.parchmentmc.org'
+	}
 	maven {
 		name = 'CurseMaven'
-		url = "https://cursemaven.com"
+		url = 'https://cursemaven.com'
 	}
 
 	// Complete Config repos
@@ -74,10 +85,6 @@ dependencies {
 //		defaultRefmapName = "${project.mod_id}.refmap.json"
 //	}
 //}
-
-base {
-	archivesName = "${project.archives_base_name}-${project.minecraft_version}-Fabric"
-}
 
 processResources {
 	inputs.property "version", project.version

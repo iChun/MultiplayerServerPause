@@ -10,87 +10,97 @@ import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.player.Player;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
+import net.minecraftforge.fml.loading.FMLEnvironment;
+import net.minecraftforge.network.ChannelBuilder;
 import net.minecraftforge.network.NetworkDirection;
-import net.minecraftforge.network.NetworkEvent;
-import net.minecraftforge.network.NetworkRegistry;
 import net.minecraftforge.network.PacketDistributor;
-import net.minecraftforge.network.simple.SimpleChannel;
-
-import java.util.function.Predicate;
+import net.minecraftforge.network.SimpleChannel;
 
 public class PacketChannelForge extends PacketChannel
 {
     private final SimpleChannel channel;
 
     @SafeVarargs
-    public PacketChannelForge(ResourceLocation name, String protocolVersion, Class<? extends AbstractPacket>...packetTypes)
+    public PacketChannelForge(ResourceLocation name, int protocolVersion, Class<? extends AbstractPacket>...packetTypes)
     {
         this(name, protocolVersion, true, true, packetTypes);
     }
 
     @SafeVarargs
-    public PacketChannelForge(ResourceLocation name, String protocolVersion, boolean clientRequired, boolean serverRequired, Class<? extends AbstractPacket>...packetTypes)
-    {
-        this(name, protocolVersion, o -> protocolVersion.equals(o) || !serverRequired, o -> protocolVersion.equals(o) || !clientRequired, packetTypes);
-    }
-
-    @SafeVarargs
-    public PacketChannelForge(ResourceLocation name, String protocolVersion, Predicate<String> clientPredicate, Predicate<String> serverPredicate, Class<? extends AbstractPacket>...packetTypes)
+    public PacketChannelForge(ResourceLocation name, int protocolVersion, boolean clientRequired, boolean serverRequired, Class<? extends AbstractPacket>...packetTypes)
     {
         super(name, packetTypes);
 
-        channel = NetworkRegistry.newSimpleChannel(name, () -> protocolVersion, clientPredicate, serverPredicate);
-        channel.registerMessage(0, PacketHolder.class,
-                (packet, buffer) -> {
-                    buffer.writeByte(clzToId.getByte(packet.packet.getClass()));
-                    packet.packet.writeTo(buffer);
-                },
-                (buffer) -> {
-                    Class<? extends AbstractPacket> clz = idToClz[buffer.readByte()];
-                    AbstractPacket packet = null;
-                    try
-                    {
-                        packet = clz.newInstance();
-                        packet.readFrom(buffer);
-                    }
-                    catch(InstantiationException | IllegalAccessException ignored){}
-                    return new PacketHolder(packet);
-                },
-                (packet, contextSupplier) -> {
-                    NetworkEvent.Context context = contextSupplier.get();
-                    packet.packet.process(context.getDirection() == NetworkDirection.PLAY_TO_SERVER ? context.getSender() : getPlayer()).ifPresent(context::enqueueWork);
-                    context.setPacketHandled(true);
-                });
-    }
-
-    @Override
-    public void sendToServer(AbstractPacket packet)
-    {
-        channel.sendToServer(new PacketHolder(packet));
+        ChannelBuilder channelBuilder = ChannelBuilder.named(name).networkProtocolVersion(protocolVersion);
+        if(!clientRequired)
+        {
+            channelBuilder = channelBuilder.optionalClient();
+        }
+        if(!serverRequired)
+        {
+            channelBuilder = channelBuilder.optionalServer();
+        }
+        channel = channelBuilder.simpleChannel();
+        channel.messageBuilder(PacketHolder.class)
+            .encoder((packet, buffer) -> {
+                buffer.writeByte(clzToId.getByte(packet.packet.getClass()));
+                packet.packet.writeTo(buffer);
+            })
+            .decoder((buffer) -> {
+                Class<? extends AbstractPacket> clz = idToClz[buffer.readByte()];
+                AbstractPacket packet = null;
+                try
+                {
+                    packet = clz.newInstance();
+                    packet.readFrom(buffer);
+                }
+                catch(InstantiationException | IllegalAccessException ignored){}
+                return new PacketHolder(packet);
+            })
+            .consumerNetworkThread((packet, context) -> {
+                packet.packet.process(context.getDirection() == NetworkDirection.PLAY_TO_SERVER ? context.getSender() : getPlayer()).ifPresent(context::enqueueWork);
+                context.setPacketHandled(true);
+            })
+            .add();
     }
 
     @Override
     public void sendTo(AbstractPacket packet, ServerPlayer player)
     {
-        channel.sendTo(new PacketHolder(packet), player.connection.connection, NetworkDirection.PLAY_TO_CLIENT); //player.connection.connection is ATed to public by Forge.
+        channel.send(new PacketHolder(packet), player.connection.getConnection()); //player.connection.connection is ATed to public by Forge.
     }
 
     @Override
     public void sendToAll(AbstractPacket packet)
     {
-        channel.send(PacketDistributor.ALL.noArg(), new PacketHolder(packet));
+        channel.send(new PacketHolder(packet), PacketDistributor.ALL.noArg());
     }
 
     @Override
     public void sendToTracking(AbstractPacket packet, Entity entity)
     {
-        channel.send(PacketDistributor.TRACKING_ENTITY_AND_SELF.with(() -> entity), packet);
+        channel.send(packet, PacketDistributor.TRACKING_ENTITY_AND_SELF.with(entity));
     }
 
     @Override
     public void sendToAround(AbstractPacket packet, ServerLevel world, double x, double y, double z, double radius)
     {
-        channel.send(PacketDistributor.NEAR.with(PacketDistributor.TargetPoint.p(x, y, z, radius, world.dimension())), packet);
+        channel.send(packet, PacketDistributor.NEAR.with(new PacketDistributor.TargetPoint(x, y, z, radius, world.dimension())));
+    }
+
+    @Override
+    public void sendToServer(AbstractPacket packet)
+    {
+        if(FMLEnvironment.dist.isClient())
+        {
+            sendToServerImpl(packet);
+        }
+    }
+
+    @OnlyIn(Dist.CLIENT)
+    private void sendToServerImpl(AbstractPacket packet)
+    {
+        channel.send(new PacketHolder(packet), Minecraft.getInstance().getConnection().getConnection());
     }
 
     @OnlyIn(Dist.CLIENT)
