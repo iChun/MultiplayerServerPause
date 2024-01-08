@@ -1,5 +1,6 @@
 package me.ichun.mods.serverpause.common.core;
 
+import com.mojang.logging.LogUtils;
 import me.ichun.mods.serverpause.common.ServerPause;
 import me.ichun.mods.serverpause.mixin.MinecraftServerAccessorMixin;
 import net.minecraft.Util;
@@ -7,15 +8,14 @@ import net.minecraft.server.MinecraftServer;
 import net.minecraft.server.dedicated.DedicatedServer;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.util.profiling.ProfilerFiller;
-import org.apache.logging.log4j.LogManager;
-import org.apache.logging.log4j.Logger;
+import org.slf4j.Logger;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 
 import java.util.List;
 
 public abstract class MinecraftServerMethods
 {
-    private static final Logger LOGGER = LogManager.getLogger();
+    private static final Logger LOGGER = LogUtils.getLogger();
 
     //Mixin methods
     public static void onTickServer(MinecraftServer server, CallbackInfo ci)
