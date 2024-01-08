@@ -15,7 +15,7 @@ public abstract class MinecraftMixin
             ordinal = 2, //third matching local variable of our matching type (boolean) (the method args counts as one as well)
             require = 1 //require at least 1 success
     )
-    private boolean onPauseCheck(boolean pause)
+    private boolean serverpause_onPauseCheck(boolean pause)
     {
         Minecraft mc = ((Minecraft)(Object)this);
         return mc.getConnection() != null && mc.getConnection().getConnection().isConnected() && ServerPause.eventHandlerClient.serverPause || pause;

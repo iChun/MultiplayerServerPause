@@ -9,6 +9,7 @@
     "MinecraftServerMixin"
   ],
   "client": [
+    "IntegratedServerMixin",
     "MinecraftMixin"
   ],
   "injectors": {

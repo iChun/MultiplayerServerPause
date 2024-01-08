@@ -3,13 +3,20 @@
   "config.serverpause.general.pauseWhenAllPlayersPaused": "Set to true to pause the server when all players are paused.",
   "config.serverpause.general.pauseWhenNoPlayers.name": "Pause When No Players",
   "config.serverpause.general.pauseWhenNoPlayers": "Set to true to pause the server when no players are connected.",
-  "config.serverpause.general.sendChatMessageWhenPauseStateChanges.name": "Send Chat Message When Pause State Changes",
+  "config.serverpause.general.sendChatMessageWhenPauseStateChanges.name": "Send Chat Message When Server Pause State Changes",
   "config.serverpause.general.sendChatMessageWhenPauseStateChanges": "Set to true to send a chat message to all players when the server pause state changes.",
+  "config.serverpause.general.sendChatMessageWhenPlayerPauseStateChanges.name": "Send Chat Message When Player Pause State Changes",
+  "config.serverpause.general.sendChatMessageWhenPlayerPauseStateChanges": "Set to true to send a chat message to all players (and to the server log) when the a player's pause state changes.",
 
   "commands.pause.alreadyPaused": "Server already paused!",
   "commands.pause.pausing": "Pausing server...",
   "commands.pause.unpausing": "Unpausing server...",
 
   "serverpause.message.paused": "Server paused.",
-  "serverpause.message.unpaused": "Server unpaused."
+  "serverpause.message.unpaused": "Server unpaused.",
+
+  "serverpause.message.playerPaused": "%s paused.",
+  "serverpause.message.playerUnpaused": "%s unpaused.",
+
+  "serverpause.message.playersPaused": "%s players paused."
 }

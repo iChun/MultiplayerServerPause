@@ -28,12 +28,31 @@ public abstract class EventHandlerServer
     {
         pauseState.put(player.getGameProfile().getId(), false);
         checkAndUpdatePauseState();
+        //send message if config for per-player
+        if(!(!ServerPause.modProxy.getServer().isDedicatedServer() && pauseState.size() == 1) && ServerPause.config.sendChatMessageWhenPlayerPauseStateChanges.get())
+        {
+            int pauseCount = 0;
+            for(Map.Entry<UUID, Boolean> e : pauseState.entrySet())
+            {
+                if(e.getValue())
+                {
+                    pauseCount++;
+                }
+            }
+            if(pauseCount > 0)
+            {
+                String prefix = pauseCount + "/" + pauseState.size(); // X/Y paused.
+                MutableComponent chat = Component.translatable("serverpause.message.playersPaused", prefix);
+                player.sendSystemMessage(chat);
+            }
+        }
+
         if(isPaused)
         {
             ServerPause.channel.sendTo(new PacketServerPause(true), (ServerPlayer)player);
             if(!(!ServerPause.modProxy.getServer().isDedicatedServer() && pauseState.size() == 1) && (forcePause || wasForcePaused || ServerPause.config.sendChatMessageWhenPauseStateChanges.get()))
             {
-                ((ServerPlayer)player).sendSystemMessage(Component.translatable("serverpause.message.paused"));
+                player.sendSystemMessage(Component.translatable("serverpause.message.paused"));
             }
         }
     }
@@ -46,7 +65,27 @@ public abstract class EventHandlerServer
 
     public void updatePlayerState(Player player, boolean paused)
     {
-        pauseState.put(player.getGameProfile().getId(), paused);
+        Boolean wasPaused = pauseState.put(player.getGameProfile().getId(), paused);
+        //send message if config for per-player
+        if(ServerPause.modProxy.getServer() != null && !(!ServerPause.modProxy.getServer().isDedicatedServer() && pauseState.size() == 1) && ServerPause.config.sendChatMessageWhenPlayerPauseStateChanges.get() && (wasPaused == null || wasPaused != paused))
+        {
+            String playerName = player.getGameProfile().getName();
+            int pauseCount = 0;
+            for(Map.Entry<UUID, Boolean> e : pauseState.entrySet())
+            {
+                if(e.getValue())
+                {
+                    pauseCount++;
+                }
+            }
+            String prefix = "(" + pauseCount + "/" + pauseState.size() + ") ";
+            ServerPause.modProxy.getServer().sendSystemMessage(Component.literal(paused ? prefix + playerName + " paused." : prefix + playerName + " unpaused."));
+            MutableComponent chat = Component.translatable(paused ? "serverpause.message.playerPaused" : "serverpause.message.playerUnpaused", prefix + playerName);
+            for(ServerPlayer player1 : ServerPause.modProxy.getServer().getPlayerList().getPlayers())
+            {
+                player1.sendSystemMessage(chat);
+            }
+        }
         checkAndUpdatePauseState();
     }
 
@@ -82,7 +121,7 @@ public abstract class EventHandlerServer
             }
         }
 
-        if(isPaused != shouldPause)
+        if(isPaused != shouldPause && ServerPause.modProxy.getServer() != null)
         {
             isPaused = shouldPause;
 

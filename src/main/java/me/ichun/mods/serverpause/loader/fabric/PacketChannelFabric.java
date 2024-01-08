@@ -104,7 +104,7 @@ public class PacketChannelFabric extends PacketChannel
         FriendlyByteBuf buf = writePacket(packet);
         for(ServerPlayer player : players)
         {
-            ServerPlayNetworking.send(player, channelId, buf);
+            ServerPlayNetworking.send(player, channelId, new FriendlyByteBuf(buf.copy()));
         }
     }
 

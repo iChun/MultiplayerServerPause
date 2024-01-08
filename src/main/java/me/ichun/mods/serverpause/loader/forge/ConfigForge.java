@@ -18,6 +18,9 @@ public class ConfigForge extends Config
         final ForgeConfigSpec.BooleanValue configSendChatMessageWhenPauseStateChanges = builder.comment("Set to true to send a chat message to all players (and to the server log) when the server pause state changes.").define("sendChatMessageWhenPauseStateChanges", false);
         sendChatMessageWhenPauseStateChanges = new ConfigWrapper<>(configSendChatMessageWhenPauseStateChanges::get, configSendChatMessageWhenPauseStateChanges::set, configSendChatMessageWhenPauseStateChanges::save);
 
+        final ForgeConfigSpec.BooleanValue configSendChatMessageWhenPlayerPauseStateChanges = builder.comment("Set to true to send a chat message to all players (and to the server log) when the a player's pause state changes.").define("sendChatMessageWhenPlayerPauseStateChanges", false);
+        sendChatMessageWhenPlayerPauseStateChanges = new ConfigWrapper<>(configSendChatMessageWhenPlayerPauseStateChanges::get, configSendChatMessageWhenPlayerPauseStateChanges::set, configSendChatMessageWhenPlayerPauseStateChanges::save);
+
         builder.pop();
     }
 }

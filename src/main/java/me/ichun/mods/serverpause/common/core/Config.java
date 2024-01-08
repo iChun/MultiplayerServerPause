@@ -8,6 +8,7 @@ public abstract class Config
     public ConfigWrapper<Boolean> pauseWhenAllPlayersPaused;
     public ConfigWrapper<Boolean> pauseWhenNoPlayers;
     public ConfigWrapper<Boolean> sendChatMessageWhenPauseStateChanges;
+    public ConfigWrapper<Boolean> sendChatMessageWhenPlayerPauseStateChanges;
 
     public static class ConfigWrapper<T>
     {
