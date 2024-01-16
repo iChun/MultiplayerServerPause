@@ -1,0 +1,22 @@
+{
+  "config.serverpause.general.pauseWhenAllPlayersPaused.name": "当所有玩家暂停时暂停",
+  "config.serverpause.general.pauseWhenAllPlayersPaused": "设置为true时，当所有玩家都处于暂停状态时暂停服务器。",
+  "config.serverpause.general.pauseWhenNoPlayers.name": "当没有玩家时暂停",
+  "config.serverpause.general.pauseWhenNoPlayers": "设置为true时，当没有玩家连接时暂停服务器。",
+  "config.serverpause.general.sendChatMessageWhenPauseStateChanges.name": "暂停状态改变时发送聊天消息",
+  "config.serverpause.general.sendChatMessageWhenPauseStateChanges": "设置为true时，当服务器暂停状态改变时向所有玩家发送聊天消息。",
+  "config.serverpause.general.sendChatMessageWhenPlayerPauseStateChanges.name": "玩家暂停状态改变时发送聊天消息",
+  "config.serverpause.general.sendChatMessageWhenPlayerPauseStateChanges": "设置为true时，当玩家的暂停状态发生改变时向所有玩家（以及服务器日志）发送聊天消息。",
+
+  "commands.pause.alreadyPaused": "服务器已经暂停！",
+  "commands.pause.pausing": "正在暂停服务器...",
+  "commands.pause.unpausing": "正在取消暂停服务器...",
+
+  "serverpause.message.paused": "服务器已暂停。",
+  "serverpause.message.unpaused": "服务器已取消暂停。",
+
+  "serverpause.message.playerPaused": "%s 已暂停。",
+  "serverpause.message.playerUnpaused": "%s 已取消暂停。",
+
+  "serverpause.message.playersPaused": "%s 个玩家已暂停。"
+}
