@@ -17,7 +17,7 @@ import java.util.UUID;
 public abstract class EventHandlerServer
 {
     public HashMap<UUID, Boolean> pauseState = new HashMap<>();
-    public boolean isPaused;
+    public boolean isPaused; //our reference if the server should be paused or not.
 
     public boolean serverPaused; //instance of the server's last pause state
 

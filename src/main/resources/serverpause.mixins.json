@@ -6,7 +6,8 @@
   "refmap": "serverpause.refmap.json",
   "mixins": [
     "MinecraftServerAccessorMixin",
-    "MinecraftServerMixin"
+    "MinecraftServerMixin",
+    "ServerPlayerMixin"
   ],
   "client": [
     "IntegratedServerMixin",
