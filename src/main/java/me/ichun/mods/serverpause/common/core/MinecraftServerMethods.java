@@ -3,6 +3,7 @@ package me.ichun.mods.serverpause.common.core;
 import com.mojang.logging.LogUtils;
 import me.ichun.mods.serverpause.common.ServerPause;
 import me.ichun.mods.serverpause.mixin.MinecraftServerAccessorMixin;
+import me.ichun.mods.serverpause.mixin.ServerGamePacketListenerImplAccessorMixin;
 import net.minecraft.Util;
 import net.minecraft.server.MinecraftServer;
 import net.minecraft.server.dedicated.DedicatedServer;
@@ -44,6 +45,19 @@ public abstract class MinecraftServerMethods
             server.getFunctions().tick();
             profilerFiller.popPush("connection");
             server.getConnection().tick(); //Tick the connection so things don't time out.
+
+            //de-tick the aboveGround fields to player doesn't get kicked for "flying"
+            for(ServerPlayer player : server.getPlayerList().getPlayers()) {
+                if(((ServerGamePacketListenerImplAccessorMixin)player.connection).getClientIsFloating() && !player.isSleeping() && !player.isPassenger() && !player.isDeadOrDying())
+                {
+                    ((ServerGamePacketListenerImplAccessorMixin)player.connection).setAboveGroundTickCount(((ServerGamePacketListenerImplAccessorMixin)player.connection).getAboveGroundTickCount() - 1);
+                }
+                if(((ServerGamePacketListenerImplAccessorMixin)player.connection).getClientVehicleIsFloating() && player.getRootVehicle().getControllingPassenger() == player)
+                {
+                    ((ServerGamePacketListenerImplAccessorMixin)player.connection).setAboveGroundVehicleTickCount(((ServerGamePacketListenerImplAccessorMixin)player.connection).getAboveGroundVehicleTickCount() - 1);
+                }
+            }
+
             profilerFiller.popPush("server gui refresh");
             List<Runnable> tickables = ((MinecraftServerAccessorMixin)server).getTickables();
             for(int i = 0; i < tickables.size(); i++)
@@ -51,7 +65,6 @@ public abstract class MinecraftServerMethods
                 tickables.get(i).run();
             }
             profilerFiller.popPush("send chunks");
-
             for(ServerPlayer player : server.getPlayerList().getPlayers()) {
                 player.connection.chunkSender.sendNextChunks(player);
                 player.connection.resumeFlushing();

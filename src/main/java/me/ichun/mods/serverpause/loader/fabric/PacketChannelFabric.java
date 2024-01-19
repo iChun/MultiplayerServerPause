@@ -18,6 +18,7 @@ import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.phys.Vec3;
 
+import java.lang.reflect.InvocationTargetException;
 import java.util.Collection;
 
 public class PacketChannelFabric extends PacketChannel
@@ -57,14 +58,18 @@ public class PacketChannelFabric extends PacketChannel
 
     public AbstractPacket readPacket(FriendlyByteBuf buffer)
     {
-        Class<? extends AbstractPacket> clz = idToClz[buffer.readByte()];
-        AbstractPacket packet = null;
+        byte id = buffer.readByte();
+        Class<? extends AbstractPacket> clz = idToClz[id];
+        AbstractPacket packet;
         try
         {
-            packet = clz.newInstance();
+            packet = clz.getDeclaredConstructor().newInstance();
             packet.readFrom(buffer);
         }
-        catch(InstantiationException | IllegalAccessException ignored){}
+        catch(NoSuchMethodException | InvocationTargetException | InstantiationException | IllegalAccessException ignored)
+        {
+            throw new RuntimeException("Unable to create packet for " + channelId.toString() + " with id " + id);
+        }
         return packet;
     }
 

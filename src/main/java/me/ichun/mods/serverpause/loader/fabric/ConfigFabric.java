@@ -30,13 +30,13 @@ public class ConfigFabric extends Config
             INSTANCE_GENERAL = this;
         }
 
-        @ConfigEntry(nameKey = "general.pauseWhenNoPlayers.name", descriptionKey = "general.pauseWhenNoPlayers", comment = "Set to true to pause the server when all connected players are paused.")
+        @ConfigEntry(nameKey = "general.pauseWhenNoPlayers.name", descriptionKey = "general.pauseWhenNoPlayers", comment = Reference.PAUSE_WHEN_ALL_PLAYERS_PAUSED_COMMENT)
         public boolean pauseWhenAllPlayersPaused = true;
-        @ConfigEntry(nameKey = "general.pauseWhenNoPlayers.name", descriptionKey = "general.pauseWhenNoPlayers", comment = "Set to true to pause the server when no players are connected.")
+        @ConfigEntry(nameKey = "general.pauseWhenNoPlayers.name", descriptionKey = "general.pauseWhenNoPlayers", comment = Reference.PAUSE_WHEN_NO_PLAYERS_COMMENT)
         public boolean pauseWhenNoPlayers = false;
-        @ConfigEntry(nameKey = "general.sendChatMessageWhenPauseStateChanges.name", descriptionKey = "general.sendChatMessageWhenPauseStateChanges", comment = "Set to true to send a chat message to all players (and to the server log) when the server pause state changes.")
+        @ConfigEntry(nameKey = "general.sendChatMessageWhenPauseStateChanges.name", descriptionKey = "general.sendChatMessageWhenPauseStateChanges", comment = Reference.SEND_CHAT_MESSAGE_WHEN_PAUSE_STATE_CHANGES_COMMENT)
         public boolean sendChatMessageWhenPauseStateChanges = false;
-        @ConfigEntry(nameKey = "general.sendChatMessageWhenPlayerPauseStateChanges.name", descriptionKey = "general.sendChatMessageWhenPlayerPauseStateChanges", comment = "Set to true to send a chat message to all players (and to the server log) when the a player's pause state changes.")
+        @ConfigEntry(nameKey = "general.sendChatMessageWhenPlayerPauseStateChanges.name", descriptionKey = "general.sendChatMessageWhenPlayerPauseStateChanges", comment = Reference.SEND_CHAT_MESSAGE_WHEN_PLAYER_PAUSE_STATE_CHANGES_COMMENT)
         public boolean sendChatMessageWhenPlayerPauseStateChanges = false;
     }
 }

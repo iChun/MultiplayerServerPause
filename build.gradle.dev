@@ -1,5 +1,5 @@
 plugins {
-	id 'fabric-loom' version '1.3-SNAPSHOT'
+	id 'fabric-loom' version '1.5-SNAPSHOT'
 	id 'maven-publish'
 }
 
@@ -23,6 +23,10 @@ repositories {
 	maven {
 		name = 'ParchmentMC'
 		url = 'https://maven.parchmentmc.org'
+	}
+	maven {
+		name = 'Neoforge'
+		url = 'https://maven.neoforged.net/releases'
 	}
 	maven {
 		name = 'CurseMaven'
@@ -59,24 +63,26 @@ dependencies {
 	// Fabric API. This is technically optional, but you probably want it anyway.
 	modImplementation "net.fabricmc.fabric-api:fabric-api:${project.fabric_version}"
 
-	// Uncomment the following line to enable the deprecated Fabric API modules. 
-	// These are included in the Fabric API production distribution and allow you to update your mod to the latest modules at a later more convenient time.
-
-	// modImplementation "net.fabricmc.fabric-api:fabric-api-deprecated:${project.fabric_version}"
 	modImplementation "curse.maven:lazydfu-433518:3821870" //Lazy DFU for 1.19+
 
 	// Complete Config dep
 	// modImplementation "com.gitlab.Lortseam:completeconfig:base:${project.completeconfig_version}"
 	modImplementation "com.terraformersmc:modmenu:${project.modmenu_version}"
+	modImplementation "me.shedaniel.cloth:cloth-config-fabric:${project.clothconfig_version}"
 	modImplementation "com.github.Lortseam.completeconfig:gui-cloth:${project.completeconfig_version}"
 
-	// Forge Deps. For dependency libraries required at compile, you'll have to add an implementation for them as well.
-	implementation "net.minecraftforge:forge:${project.forge_version}:universal"
-	implementation "net.minecraftforge:javafmllanguage:${project.forge_version}"
-	implementation "net.minecraftforge:fmlcore:${project.forge_version}"
-	implementation "net.minecraftforge:eventbus:${project.forge_event_bus_version}"
-	implementation "net.minecraftforge:mergetool:${project.forge_merge_tool_version}:api"
-	implementation "com.electronwill.night-config:core:${project.nightconfig_core_version}"
+	// Forge deps. For dependency libraries required at compile, you'll have to add an implementation for them as well.
+	compileOnly "net.minecraftforge:forge:${project.forge_version}:universal"
+	compileOnly "net.minecraftforge:javafmllanguage:${project.forge_version}"
+//	compileOnly "net.minecraftforge:fmlcore:${project.forge_version}"
+//	compileOnly "net.minecraftforge:eventbus:${project.forge_event_bus_version}"
+//	compileOnly "net.minecraftforge:mergetool:${project.forge_merge_tool_version}:api"
+
+	// Neoforge deps
+	compileOnly "net.neoforged:neoforge:${project.neoforge_version}:universal"
+
+	// Common Forge deps
+	compileOnly "com.electronwill.night-config:core:${project.nightconfig_core_version}"
 }
 
 //If there's mixins

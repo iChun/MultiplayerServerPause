@@ -10,6 +10,14 @@ public abstract class Config
     public ConfigWrapper<Boolean> sendChatMessageWhenPauseStateChanges;
     public ConfigWrapper<Boolean> sendChatMessageWhenPlayerPauseStateChanges;
 
+    protected static class Reference
+    {
+        public static final String PAUSE_WHEN_ALL_PLAYERS_PAUSED_COMMENT = "Set to true to pause the server when all connected players are paused.";
+        public static final String PAUSE_WHEN_NO_PLAYERS_COMMENT = "Set to true to pause the server when no players are connected.";
+        public static final String SEND_CHAT_MESSAGE_WHEN_PAUSE_STATE_CHANGES_COMMENT = "Set to true to send a chat message to all players (and to the server log) when the server pause state changes.";
+        public static final String SEND_CHAT_MESSAGE_WHEN_PLAYER_PAUSE_STATE_CHANGES_COMMENT = "Set to true to send a chat message to all players (and to the server log) when the a player's pause state changes.";
+    }
+
     public static class ConfigWrapper<T>
     {
         public final Supplier<T> getter;
