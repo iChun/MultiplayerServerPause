@@ -4,6 +4,7 @@ plugins {
     id 'net.minecraftforge.gradle' version "${forge_gradle_version}"
 	id 'org.parchmentmc.librarian.forgegradle' version '1.+'
     id 'org.spongepowered.mixin' version '0.7.+'
+    id "com.hypherionmc.modutils.modpublisher" version "${modpublisher_version}"
 }
 
 version = project.mod_version
@@ -111,7 +112,6 @@ dependencies {
     // The userdev artifact is a special name and will get all sorts of transformations applied to it.
     minecraft "net.minecraftforge:forge:${project.forge_version}"
 
-	//Uncomment if using mixins (Mixin edits are found in 3 places)
 	annotationProcessor 'org.spongepowered:mixin:0.8.5:processor'
 
     // Real mod deobf dependency examples - these get remapped to your current mappings
@@ -158,8 +158,6 @@ tasks.named('processResources', ProcessResources).configure {
 }
 
 // Example for how to get properties into the manifest for reading at runtime.
-// Add mixin config to manifest: (Mixin edits are found in 3 places)
-//                "MixinConfigs"            : "${project.mod_id}.mixins.json"
 jar {
     manifest {
         attributes([
@@ -196,4 +194,29 @@ publishing {
 
 tasks.withType(JavaCompile).configureEach {
     options.encoding = 'UTF-8' // Use the UTF-8 charset for Java compilation
+}
+
+apply from: 'gradle/modpublisher.gradle'
+
+publisher {
+    // Curseforge Project ID
+    setCurseID("${curseforge_project_id_forge}")
+    
+    // The file to be uploaded. This can be a file, task, or string.
+    // setArtifact("build/libs/mymod.jar")
+    // setArtifact(jar.getArchiveFile().get())
+    // If this is a task, the task specified will be executed before publishing
+    setArtifact(jar)
+
+    // Fancy display name for the upload.
+    // Will default to the project version if not set
+    setDisplayName("[${minecraft_version} Forge] v ${mod_version}")    
+    
+    // The modloaders your upload supports.
+    // This can also be an Enum from ModLoader,
+    // like setLoaders(ModLoader.FABRIC, ModLoader.FORGE)
+    setLoaders("forge")
+    
+    // Additional files to upload. Same as artifact, this can be a task, file or string
+    //addAdditionalFile(apiJar)
 }

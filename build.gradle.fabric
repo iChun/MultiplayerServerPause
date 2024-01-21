@@ -1,6 +1,7 @@
 plugins {
 	id 'fabric-loom' version "${fabric_loom_version}"
 	id 'maven-publish'
+	id "com.hypherionmc.modutils.modpublisher" version "${modpublisher_version}"
 }
 
 version = project.mod_version
@@ -117,4 +118,40 @@ publishing {
 		// The repositories here will be used for publishing your artifact, not for
 		// retrieving dependencies.
 	}
+}
+
+apply from: 'gradle/modpublisher.gradle'
+
+publisher {
+    // Curseforge Project ID
+    setCurseID("${curseforge_project_id_fabric}")
+
+    // The file to be uploaded. This can be a file, task, or string.
+    // setArtifact("build/libs/mymod.jar")
+    // setArtifact(jar.getArchiveFile().get())
+    // If this is a task, the task specified will be executed before publishing
+    setArtifact(remapJar)
+
+    // Fancy display name for the upload.
+    // Will default to the project version if not set
+    setDisplayName("[${minecraft_version} Fabric] v ${mod_version}")    
+    
+    // The modloaders your upload supports.
+    // This can also be an Enum from ModLoader,
+    // like setLoaders(ModLoader.FABRIC, ModLoader.FORGE)
+    setLoaders("fabric")
+    
+    // Additional files to upload. Same as artifact, this can be a task, file or string
+    //addAdditionalFile(apiJar)
+
+    // Modrinth Dependencies.
+    // Accepts a slug or id
+    modrinthDepends {
+        required "P7dR8mSH", "GtqG8z1h" //Fabric API and CompleteConfig
+    }
+
+    // Curse Dependencies
+    curseDepends {
+        required "fabric-api", "completeconfig" //Fabric API and CompleteConfig
+    }
 }

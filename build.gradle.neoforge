@@ -4,6 +4,7 @@ plugins {
     id 'idea'
     id 'maven-publish'
     id 'net.neoforged.gradle.userdev' version "${neoforge_gradle_version}"
+    id "com.hypherionmc.modutils.modpublisher" version "${modpublisher_version}"
 }
 
 version = project.mod_version
@@ -14,7 +15,7 @@ repositories {
 }
 
 base {
-    archivesName = "${project.archives_base_name}-${project.minecraft_version}-Neoforge"
+    archivesName = "${project.archives_base_name}-${project.minecraft_version}-NeoForge"
 }
 
 // Mojang ships Java 17 to end users in 1.18+, so your mod should target Java 17.
@@ -155,4 +156,29 @@ publishing {
 
 tasks.withType(JavaCompile).configureEach {
     options.encoding = 'UTF-8' // Use the UTF-8 charset for Java compilation
+}
+
+apply from: 'gradle/modpublisher.gradle'
+
+publisher {
+    // Curseforge Project ID
+    setCurseID("${curseforge_project_id_forge}")
+    
+    // The file to be uploaded. This can be a file, task, or string.
+    // setArtifact("build/libs/mymod.jar")
+    // setArtifact(jar.getArchiveFile().get())
+    // If this is a task, the task specified will be executed before publishing
+    setArtifact(jar)
+
+    // Fancy display name for the upload.
+    // Will default to the project version if not set
+    setDisplayName("[${minecraft_version} NeoForge] v ${mod_version}")
+    
+    // The modloaders your upload supports.
+    // This can also be an Enum from ModLoader,
+    // like setLoaders(ModLoader.FABRIC, ModLoader.FORGE)
+    setLoaders("neoforge")
+    
+    // Additional files to upload. Same as artifact, this can be a task, file or string
+    //addAdditionalFile(apiJar)
 }
