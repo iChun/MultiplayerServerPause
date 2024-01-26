@@ -67,7 +67,7 @@ public class PacketChannelForge extends PacketChannel
     @Override
     public void sendTo(AbstractPacket packet, ServerPlayer player)
     {
-        channel.send(new PacketHolder(packet), player.connection.getConnection()); //player.connection.connection is ATed to public by Forge.
+        channel.send(new PacketHolder(packet), PacketDistributor.PLAYER.with(player));
     }
 
     @Override
