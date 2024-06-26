@@ -41,6 +41,6 @@ public class LoaderForge extends ServerPause
     {
         eventHandlerClient = new EventHandlerClient();
 
-        ModLoadingContext.get().registerExtensionPoint(ConfigScreenHandler.ConfigScreenFactory.class, () -> new ConfigScreenHandler.ConfigScreenFactory(WorkspaceConfigs::new));
+        ModLoadingContext.get().registerExtensionPoint(ConfigScreenHandler.ConfigScreenFactory.class, () -> new ConfigScreenHandler.ConfigScreenFactory((mc, screen) -> new WorkspaceConfigs(screen)));
     }
 }
