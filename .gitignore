@@ -1,5 +1,6 @@
 # eclipse
 bin
+eclipse
 *.launch
 .settings
 .metadata
@@ -18,12 +19,9 @@ build
 .gradle
 libs
 logs
-
-# ignore build.gradle since we have 3 different versions
-build.gradle
+repo
 
 # other
-eclipse
 run
 
 # java
