@@ -13,8 +13,8 @@ import net.neoforged.bus.api.IEventBus;
 import net.neoforged.fml.ModLoadingContext;
 import net.neoforged.fml.common.Mod;
 import net.neoforged.fml.event.lifecycle.FMLClientSetupEvent;
-import net.neoforged.neoforge.client.gui.IConfigScreenFactory;
-import net.neoforged.neoforge.network.event.RegisterPayloadHandlersEvent;
+import net.neoforged.neoforge.client.ConfigScreenHandler;
+import net.neoforged.neoforge.network.event.RegisterPayloadHandlerEvent;
 
 @Mod(ServerPause.MOD_ID)
 public class LoaderNeoForge extends ServerPause
@@ -41,10 +41,10 @@ public class LoaderNeoForge extends ServerPause
     {
         eventHandlerClient = new EventHandlerClient();
 
-        ModLoadingContext.get().registerExtensionPoint(IConfigScreenFactory.class, () -> (minecraft, screen) -> new WorkspaceConfigs(screen));
+        ModLoadingContext.get().registerExtensionPoint(ConfigScreenHandler.ConfigScreenFactory.class, () -> new ConfigScreenHandler.ConfigScreenFactory((mc, screen) -> new WorkspaceConfigs(screen)));
     }
 
-    private void registerPayloadHandler(RegisterPayloadHandlersEvent event)
+    private void registerPayloadHandler(RegisterPayloadHandlerEvent event)
     {
         channel = new PacketChannelNeoForge(event, CHANNEL_ID, NETWORK_PROTOCOL, PACKET_TYPES);
     }
