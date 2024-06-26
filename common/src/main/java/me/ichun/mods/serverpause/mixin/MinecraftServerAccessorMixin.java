@@ -2,9 +2,9 @@ package me.ichun.mods.serverpause.mixin;
 
 import net.minecraft.network.protocol.status.ServerStatus;
 import net.minecraft.server.MinecraftServer;
+import net.minecraft.util.RandomSource;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.gen.Accessor;
-import org.spongepowered.asm.mixin.gen.Invoker;
 
 import java.util.List;
 
@@ -21,8 +21,8 @@ public interface MinecraftServerAccessorMixin
     void setLastServerStatus(long l);
 
     @Accessor
-    void setStatus(ServerStatus status);
+    ServerStatus getStatus();
 
-    @Invoker
-    ServerStatus invokeBuildServerStatus();
+    @Accessor
+    RandomSource getRandom();
 }

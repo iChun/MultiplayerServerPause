@@ -1,17 +1,22 @@
 package me.ichun.mods.serverpause.common.core;
 
+import com.mojang.authlib.GameProfile;
 import com.mojang.logging.LogUtils;
 import me.ichun.mods.serverpause.common.ServerPause;
 import me.ichun.mods.serverpause.mixin.MinecraftServerAccessorMixin;
 import me.ichun.mods.serverpause.mixin.ServerGamePacketListenerImplAccessorMixin;
 import net.minecraft.Util;
+import net.minecraft.network.protocol.status.ServerStatus;
 import net.minecraft.server.MinecraftServer;
 import net.minecraft.server.dedicated.DedicatedServer;
 import net.minecraft.server.level.ServerPlayer;
+import net.minecraft.util.Mth;
 import net.minecraft.util.profiling.ProfilerFiller;
 import org.slf4j.Logger;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 
+import java.util.Arrays;
+import java.util.Collections;
 import java.util.List;
 
 public abstract class MinecraftServerMethods
@@ -71,7 +76,23 @@ public abstract class MinecraftServerMethods
                 long l = Util.getNanos();
                 if (l - ((MinecraftServerAccessorMixin)server).getLastServerStatus() >= 5000000000L) {
                     ((MinecraftServerAccessorMixin)server).setLastServerStatus(l);
-                    ((MinecraftServerAccessorMixin)server).setStatus(((MinecraftServerAccessorMixin)server).invokeBuildServerStatus());
+                    ((MinecraftServerAccessorMixin)server).getStatus().setPlayers(new ServerStatus.Players(server.getMaxPlayers(), server.getPlayerCount()));
+                    if (!server.hidesOnlinePlayers()) {
+                        GameProfile[] gameProfiles = new GameProfile[Math.min(server.getPlayerCount(), 12)];
+                        int i = Mth.nextInt(((MinecraftServerAccessorMixin)server).getRandom(), 0, server.getPlayerCount() - gameProfiles.length);
+
+                        for(int j = 0; j < gameProfiles.length; ++j) {
+                            ServerPlayer serverPlayer = server.getPlayerList().getPlayers().get(i + j);
+                            if (serverPlayer.allowsListing()) {
+                                gameProfiles[j] = serverPlayer.getGameProfile();
+                            } else {
+                                gameProfiles[j] = MinecraftServer.ANONYMOUS_PLAYER_PROFILE;
+                            }
+                        }
+
+                        Collections.shuffle(Arrays.asList(gameProfiles));
+                        ((MinecraftServerAccessorMixin)server).getStatus().getPlayers().setSample(gameProfiles);
+                    }
                 }
             }
 
