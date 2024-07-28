@@ -1,0 +1,22 @@
+{
+  "config.serverpause.prop.pauseWhenAllPlayersPaused.name": "當所有玩家暫停時暫停",
+  "config.serverpause.prop.pauseWhenAllPlayersPaused.desc": "設置為 true 時，當所有玩家都處於暫停狀態時暫停伺服器。",
+  "config.serverpause.prop.pauseWhenNoPlayers.name": "當沒有玩家時暫停",
+  "config.serverpause.prop.pauseWhenNoPlayers.desc": "設置為true時，當沒有玩家連接時暫停伺服器。",
+  "config.serverpause.prop.sendChatMessageWhenPauseStateChanges.name": "暫停狀態改變時發送聊天訊息",
+  "config.serverpause.prop.sendChatMessageWhenPauseStateChanges.desc": "設置為 true 時，當伺服器暫停狀態改變時向所有玩家發送聊天訊息。",
+  "config.serverpause.prop.sendChatMessageWhenPlayerPauseStateChanges.name": "玩家暫停狀態改變時發送聊天訊息",
+  "config.serverpause.prop.sendChatMessageWhenPlayerPauseStateChanges.desc": "設置為 true 時，當玩家的暫停狀態發生改變時向所有玩家（以及伺服器日誌）發送聊天訊息。",
+
+  "commands.pause.alreadyPaused": "伺服器已經暫停！",
+  "commands.pause.pausing": "正在暫停伺服器...",
+  "commands.pause.unpausing": "正在取消暫停伺服器...",
+
+  "serverpause.message.paused": "伺服器已暫停。",
+  "serverpause.message.unpaused": "伺服器已取消暫停。",
+
+  "serverpause.message.playerPaused": "%s 已暫停。",
+  "serverpause.message.playerUnpaused": "%s 已取消暫停。",
+
+  "serverpause.message.playersPaused": "%s 個玩家已暫停。"
+}
