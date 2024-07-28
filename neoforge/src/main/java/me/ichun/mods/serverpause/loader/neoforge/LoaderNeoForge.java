@@ -41,7 +41,7 @@ public class LoaderNeoForge extends ServerPause
     {
         eventHandlerClient = new EventHandlerClient();
 
-        ModLoadingContext.get().registerExtensionPoint(IConfigScreenFactory.class, () -> (minecraft, screen) -> new WorkspaceConfigs(screen));
+        ModLoadingContext.get().registerExtensionPoint(IConfigScreenFactory.class, () -> (modContainer, screen) -> new WorkspaceConfigs(screen));
     }
 
     private void registerPayloadHandler(RegisterPayloadHandlersEvent event)
