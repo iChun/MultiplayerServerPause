@@ -1,6 +1,7 @@
 package me.ichun.mods.serverpause.common.core;
 
 import com.mojang.brigadier.CommandDispatcher;
+import me.ichun.mods.ichunutil.common.entity.EntityHelper;
 import me.ichun.mods.ichunutil.common.iChunUtil;
 import me.ichun.mods.serverpause.common.ServerPause;
 import me.ichun.mods.serverpause.common.network.packet.PacketServerPause;
@@ -36,8 +37,13 @@ public class EventHandlerServer
         iChunUtil.eS().registerCommandRegistrationListener(this::registerPauseCommand);
     }
 
-    public void onPlayerLogin(Player player)
+    public void onPlayerLogin(ServerPlayer player)
     {
+        if(EntityHelper.isFakePlayer(player))
+        {
+            return; //don't track the "pause state" of fake players.
+        }
+
         pauseState.put(player.getGameProfile().getId(), false);
         checkAndUpdatePauseState();
         //send message if config for per-player
@@ -61,7 +67,7 @@ public class EventHandlerServer
 
         if(isPaused)
         {
-            ServerPause.channel.sendTo(new PacketServerPause(true), (ServerPlayer)player);
+            ServerPause.channel.sendTo(new PacketServerPause(true), player);
             if(!(!ServerPause.modProxy.getServer().isDedicatedServer() && pauseState.size() == 1) && (forcePause || wasForcePaused || ServerPause.config.sendChatMessageWhenPauseStateChanges))
             {
                 player.sendSystemMessage(Component.translatable("serverpause.message.paused"));
@@ -69,7 +75,7 @@ public class EventHandlerServer
         }
     }
 
-    public void onPlayerLogout(Player player)
+    public void onPlayerLogout(ServerPlayer player)
     {
         pauseState.remove(player.getGameProfile().getId());
         checkAndUpdatePauseState();
