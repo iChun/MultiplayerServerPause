@@ -8,6 +8,7 @@ import net.minecraft.Util;
 import net.minecraft.server.MinecraftServer;
 import net.minecraft.server.dedicated.DedicatedServer;
 import net.minecraft.server.level.ServerPlayer;
+import net.minecraft.util.profiling.Profiler;
 import net.minecraft.util.profiling.ProfilerFiller;
 import org.slf4j.Logger;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
@@ -25,7 +26,7 @@ public abstract class MinecraftServerMethods
         boolean isServerPaused = ServerPause.eventHandlerServer.serverPaused;
         ServerPause.eventHandlerServer.serverPaused = ServerPause.eventHandlerServer.isPaused;
 
-        ProfilerFiller profilerFiller = server.getProfiler();
+        ProfilerFiller profilerFiller = Profiler.get();
         if(!isServerPaused && ServerPause.eventHandlerServer.serverPaused)
         {
             profilerFiller.push("autoSave");
