@@ -10,20 +10,26 @@ import me.ichun.mods.serverpause.common.core.EventHandlerServer;
 import net.neoforged.api.distmarker.Dist;
 import net.neoforged.api.distmarker.OnlyIn;
 import net.neoforged.bus.api.IEventBus;
-import net.neoforged.fml.ModLoadingContext;
+import net.neoforged.fml.ModContainer;
 import net.neoforged.fml.common.Mod;
-import net.neoforged.fml.event.lifecycle.FMLClientSetupEvent;
+import net.neoforged.fml.loading.FMLEnvironment;
 import net.neoforged.neoforge.client.gui.IConfigScreenFactory;
 import net.neoforged.neoforge.network.event.RegisterPayloadHandlersEvent;
+
+import java.util.function.Supplier;
 
 @Mod(ServerPause.MOD_ID)
 public class LoaderNeoForge extends ServerPause
 {
-    public LoaderNeoForge(IEventBus eventBus)
+    public LoaderNeoForge(IEventBus eventBus, ModContainer container)
     {
         modProxy = this;
 
-        eventBus.addListener(this::onClientSetup);
+        //client config
+        if(FMLEnvironment.dist.isClient())
+        {
+            initClient(container);
+        }
         eventBus.addListener(this::registerPayloadHandler);
 
         eventHandlerServer = new EventHandlerServer();
@@ -31,17 +37,12 @@ public class LoaderNeoForge extends ServerPause
         config = iChunUtil.d().registerConfig(new Config(), eventBus);
     }
 
-    private void onClientSetup(FMLClientSetupEvent event)
-    {
-        initClient();
-    }
-
     @OnlyIn(Dist.CLIENT)
-    private void initClient()
+    private void initClient(ModContainer container)
     {
         eventHandlerClient = new EventHandlerClient();
 
-        ModLoadingContext.get().registerExtensionPoint(IConfigScreenFactory.class, () -> (modContainer, screen) -> new WorkspaceConfigs(screen));
+        container.registerExtensionPoint(IConfigScreenFactory.class, (Supplier<IConfigScreenFactory>)() -> (modContainer, screen) -> new WorkspaceConfigs(screen, MOD_ID));
     }
 
     private void registerPayloadHandler(RegisterPayloadHandlersEvent event)
