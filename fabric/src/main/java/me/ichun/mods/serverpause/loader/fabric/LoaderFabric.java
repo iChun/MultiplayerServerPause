@@ -8,7 +8,7 @@ import me.ichun.mods.serverpause.common.core.EventHandlerServer;
 import net.fabricmc.api.ModInitializer;
 
 public class LoaderFabric extends ServerPause
-        implements ModInitializer
+    implements ModInitializer
 {
     @Override
     public void onInitialize()
