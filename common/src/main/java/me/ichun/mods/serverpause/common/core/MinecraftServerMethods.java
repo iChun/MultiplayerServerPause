@@ -3,6 +3,7 @@ package me.ichun.mods.serverpause.common.core;
 import com.mojang.authlib.GameProfile;
 import com.mojang.logging.LogUtils;
 import me.ichun.mods.serverpause.common.ServerPause;
+import me.ichun.mods.serverpause.compat.CompatHandler;
 import me.ichun.mods.serverpause.mixin.MinecraftServerAccessorMixin;
 import me.ichun.mods.serverpause.mixin.ServerGamePacketListenerImplAccessorMixin;
 import net.minecraft.Util;
@@ -38,6 +39,8 @@ public abstract class MinecraftServerMethods
             server.saveEverything(false, false, false);
             profilerFiller.pop();
         }
+
+        CompatHandler.tickServer(server, ServerPause.eventHandlerServer.serverPaused);
 
         if(ServerPause.eventHandlerServer.serverPaused)
         {
