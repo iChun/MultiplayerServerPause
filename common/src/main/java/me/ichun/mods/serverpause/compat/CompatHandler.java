@@ -1,16 +1,22 @@
 package me.ichun.mods.serverpause.compat;
 
 import com.mojang.logging.LogUtils;
+import me.ichun.mods.serverpause.common.ServerPause;
+import net.minecraft.Util;
 import net.minecraft.server.MinecraftServer;
 import org.slf4j.Logger;
 
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
+import java.util.HashMap;
 import java.util.HashSet;
 
 public final class CompatHandler
 {
     private static final Logger LOGGER = LogUtils.getLogger();
+    public static final HashMap<String, Class<?>> REGISTERED_COMPATS = Util.make(new HashMap<>(), m -> {
+        m.put("valkyrienSkies", CompatValkyrienSkies.class);
+    });
 
     private static HashSet<Compat> compats;
 
@@ -27,11 +33,23 @@ public final class CompatHandler
 
     private static void checkCompats()
     {
-        CompatValkyrienSkies compatValkyrienSkies = new CompatValkyrienSkies();
-        if(compatValkyrienSkies.check())
-        {
-            compats.add(compatValkyrienSkies);
-        }
+        REGISTERED_COMPATS.forEach((k, v) -> {
+            if(!ServerPause.config.disabledCompatibilities.contains(k))
+            {
+                try
+                {
+                    Compat compat = (Compat)v.getDeclaredConstructor().newInstance();
+                    if(compat.check())
+                    {
+                        compats.add(compat);
+                    }
+                }
+                catch(InstantiationException | IllegalAccessException | InvocationTargetException | NoSuchMethodException e)
+                {
+                    LOGGER.error("Error creating compat class: {}", v.getName(), e);
+                }
+            }
+        });
     }
 
     private static abstract class Compat
@@ -77,22 +95,26 @@ public final class CompatHandler
         @Override
         boolean tickServer(MinecraftServer server, boolean isPaused)
         {
-            //get the pipeline
-            try
+            if(server.isDedicatedServer()) //single player is managed by the mod fine.
             {
-                Object pipeline = getVsPipeline.invoke(server);
-                if(pipeline != null)
+                //get the pipeline
+                try
                 {
-                    setArePhysicsRunning.invoke(pipeline, !isPaused);
-                }
+                    Object pipeline = getVsPipeline.invoke(server);
+                    if(pipeline != null)
+                    {
+                        setArePhysicsRunning.invoke(pipeline, !isPaused);
+                    }
 
-                return true;
+                    return true;
+                }
+                catch(IllegalAccessException | InvocationTargetException e)
+                {
+                    LOGGER.error("Error ticking for ValkyrienSkies compatibility", e);
+                    return false;
+                }
             }
-            catch(IllegalAccessException | InvocationTargetException e)
-            {
-                LOGGER.error("Error ticking for ValkyrienSkies compatibility", e);
-                return false;
-            }
+            return true;
         }
     }
 }
