@@ -1,0 +1,24 @@
+{
+  "config.serverpause.prop.pauseWhenAllPlayersPaused.name": "Pausar cuando todos los jugadores estén pausados",
+  "config.serverpause.prop.pauseWhenAllPlayersPaused.desc": "Establecer en verdadero para pausar el servidor cuando todos los jugadores estén pausados.",
+  "config.serverpause.prop.pauseWhenNoPlayers.name": "Pausar cuando no haya jugadores",
+  "config.serverpause.prop.pauseWhenNoPlayers.desc": "Establecer en verdadero para pausar el servidor cuando no haya jugadores conectados.",
+  "config.serverpause.prop.sendChatMessageWhenPauseStateChanges.name": "Enviar mensaje de chat cuando cambie el estado de pausa del servidor",
+  "config.serverpause.prop.sendChatMessageWhenPauseStateChanges.desc": "Establecer en verdadero para enviar un mensaje de chat a todos los jugadores cuando cambie el estado de pausa del servidor.",
+  "config.serverpause.prop.sendChatMessageWhenPlayerPauseStateChanges.name": "Enviar mensaje de chat cuando cambie el estado de pausa de un jugador",
+  "config.serverpause.prop.sendChatMessageWhenPlayerPauseStateChanges.desc": "Establecer en verdadero para enviar un mensaje de chat a todos los jugadores (y al registro del servidor) cuando cambie el estado de pausa de un jugador.",
+  "config.serverpause.prop.disabledCompatibilities.name": "Compatibilidades de mods deshabilitadas",
+  "config.serverpause.prop.disabledCompatibilities.desc": "Deshabilita estas compatibilidades de mods si ocurre algún error con ellas activadas. Acepta: valkyrienSkies",
+
+  "commands.pause.alreadyPaused": "¡Servidor ya pausado!",
+  "commands.pause.pausing": "Pausando servidor...",
+  "commands.pause.unpausing": "Reanudando servidor...",
+
+  "serverpause.message.paused": "Servidor pausado.",
+  "serverpause.message.unpaused": "Servidor reanudado.",
+
+  "serverpause.message.playerPaused": "%s pausado.",
+  "serverpause.message.playerUnpaused": "%s reanudado.",
+
+  "serverpause.message.playersPaused": "%s jugadores pausados."
+}
