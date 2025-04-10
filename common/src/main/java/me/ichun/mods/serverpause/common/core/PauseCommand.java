@@ -13,7 +13,7 @@ public class PauseCommand
     private static final SimpleCommandExceptionType ALREADY_PAUSED = new SimpleCommandExceptionType(new TranslatableComponent("commands.pause.alreadyPaused"));
 
     public static void register(CommandDispatcher<CommandSourceStack> dispatcher) {
-        dispatcher.register(Commands.literal("pause").requires(p -> p.hasPermission(4))
+        dispatcher.register(Commands.literal("pause").requires(p -> p.hasPermission(ServerPause.config.commandPermissionLevel))
             .executes(context -> {
                 if(ServerPause.eventHandlerServer.isPaused && !ServerPause.eventHandlerServer.forcePause)
                 {
