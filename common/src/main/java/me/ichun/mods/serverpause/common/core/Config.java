@@ -16,6 +16,8 @@ public class Config extends ConfigBase
     public boolean sendChatMessageWhenPauseStateChanges = false;
     public boolean sendChatMessageWhenPlayerPauseStateChanges = false;
 
+    public int commandPermissionLevel = 4;
+
     @Prop(validator = "validateCompatibilities")
     public List<String> disabledCompatibilities = new ArrayList<>();
 
