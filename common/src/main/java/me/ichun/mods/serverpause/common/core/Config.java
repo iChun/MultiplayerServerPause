@@ -21,6 +21,11 @@ public class Config extends ConfigBase
     @Prop(validator = "validateCompatibilities")
     public List<String> disabledCompatibilities = new ArrayList<>();
 
+    public Config()
+    {
+        super("multiplayerserverpause.toml");
+    }
+
     @NotNull
     @Override
     public String getModId()
