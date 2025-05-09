@@ -34,7 +34,7 @@ public class LoaderNeoForge extends ServerPause
 
         eventHandlerServer = new EventHandlerServer();
 
-        config = iChunUtil.d().registerConfig(new Config(), eventBus);
+        config = iChunUtil.d().registerConfig(new Config(), eventBus, container);
     }
 
     @OnlyIn(Dist.CLIENT)
