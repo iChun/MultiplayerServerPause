@@ -7,6 +7,8 @@
   "config.serverpause.prop.sendChatMessageWhenPauseStateChanges.desc": "設置為 true 時，當伺服器暫停狀態改變時向所有玩家發送聊天訊息。",
   "config.serverpause.prop.sendChatMessageWhenPlayerPauseStateChanges.name": "玩家暫停狀態改變時發送聊天訊息",
   "config.serverpause.prop.sendChatMessageWhenPlayerPauseStateChanges.desc": "設置為 true 時，當玩家的暫停狀態發生改變時向所有玩家（以及伺服器日誌）發送聊天訊息。",
+  "config.serverpause.prop.disabledCompatibilities.name": "Disabled Mod Compatibilities",
+  "config.serverpause.prop.disabledCompatibilities.desc": "Disables these mod compatibilities if any errors occur with them turned on. Accepts: valkyrienSkies, sereneSeasons",
 
   "commands.pause.alreadyPaused": "伺服器已經暫停！",
   "commands.pause.pausing": "正在暫停伺服器...",
