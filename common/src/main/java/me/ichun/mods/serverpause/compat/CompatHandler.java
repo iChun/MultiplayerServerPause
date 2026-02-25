@@ -159,15 +159,27 @@ public final class CompatHandler
                 seasonCycleTicks = clzSeasonSavedData.getDeclaredField("seasonCycleTicks");
                 seasonCycleTicks.setAccessible(true);
 
+                markDirty = null;
                 try
                 {
                     markDirty = clzSeasonSavedData.getMethod("setDirty");
                 }
                 catch(NoSuchMethodException ignored)
                 {
-                    markDirty = clzSeasonSavedData.getMethod("markDirty");
+                    try
+                    {
+                        markDirty = clzSeasonSavedData.getMethod("markDirty");
+                    }
+                    catch(NoSuchMethodException ignored1){}
                 }
-                markDirty.setAccessible(true);
+                if(markDirty != null)
+                {
+                    markDirty.setAccessible(true);
+                }
+                else
+                {
+                    LOGGER.warn("Could not resolve Serene Seasons dirty method, continuing without save dirty mark");
+                }
 
                 LOGGER.info("Found Serene Seasons methods! All ok!");
                 return true;
@@ -214,7 +226,10 @@ public final class CompatHandler
                     if(currentSeasonTicks != frozenSeasonTicks)
                     {
                         seasonCycleTicks.setInt(seasonSavedData, frozenSeasonTicks);
-                        markDirty.invoke(seasonSavedData);
+                        if(markDirty != null)
+                        {
+                            markDirty.invoke(seasonSavedData);
+                        }
                     }
                 }
 
