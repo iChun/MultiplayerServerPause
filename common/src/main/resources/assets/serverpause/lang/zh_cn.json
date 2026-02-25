@@ -7,6 +7,8 @@
   "config.serverpause.prop.sendChatMessageWhenPauseStateChanges.desc": "设置为true时，当服务器暂停状态改变时向所有玩家发送聊天消息。",
   "config.serverpause.prop.sendChatMessageWhenPlayerPauseStateChanges.name": "玩家暂停状态改变时发送聊天消息",
   "config.serverpause.prop.sendChatMessageWhenPlayerPauseStateChanges.desc": "设置为true时，当玩家的暂停状态发生改变时向所有玩家（以及服务器日志）发送聊天消息。",
+  "config.serverpause.prop.disabledCompatibilities.name": "已禁用的模组兼容性",
+  "config.serverpause.prop.disabledCompatibilities.desc": "如果在启用这些模组兼容性时发生任何错误，则会将其禁用。可用值：valkyrienSkies, sereneSeasons",
 
   "commands.pause.alreadyPaused": "服务器已经暂停！",
   "commands.pause.pausing": "正在暂停服务器...",

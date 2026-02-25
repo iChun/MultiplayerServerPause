@@ -3,9 +3,13 @@ package me.ichun.mods.serverpause.compat;
 import com.mojang.logging.LogUtils;
 import me.ichun.mods.serverpause.common.ServerPause;
 import net.minecraft.Util;
+import net.minecraft.resources.ResourceKey;
 import net.minecraft.server.MinecraftServer;
+import net.minecraft.server.level.ServerLevel;
+import net.minecraft.world.level.Level;
 import org.slf4j.Logger;
 
+import java.lang.reflect.Field;
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 import java.util.HashMap;
@@ -15,6 +19,7 @@ public final class CompatHandler
 {
     private static final Logger LOGGER = LogUtils.getLogger();
     public static final HashMap<String, Class<?>> REGISTERED_COMPATS = Util.make(new HashMap<>(), m -> {
+        m.put("sereneSeasons", CompatSereneSeasons.class);
         m.put("valkyrienSkies", CompatValkyrienSkies.class);
     });
 
@@ -115,6 +120,126 @@ public final class CompatHandler
                 }
             }
             return true;
+        }
+    }
+
+    private static class CompatSereneSeasons extends Compat
+    {
+        Method getSeasonSavedData;
+        Field seasonCycleTicks;
+        Method markDirty;
+        HashMap<ResourceKey<Level>, Integer> pausedSeasonTicks = new HashMap<>();
+
+        @Override
+        boolean check()
+        {
+            try
+            {
+                Class<?> clzModList = Class.forName("net.minecraftforge.fml.ModList");
+                Method modListGet = clzModList.getDeclaredMethod("get");
+                modListGet.setAccessible(true);
+
+                Method modListIsLoaded = clzModList.getDeclaredMethod("isLoaded", String.class);
+                modListIsLoaded.setAccessible(true);
+
+                Object modList = modListGet.invoke(null);
+                boolean isSereneSeasonsLoaded = (boolean)modListIsLoaded.invoke(modList, "sereneseasons");
+                if(!isSereneSeasonsLoaded)
+                {
+                    return false;
+                }
+
+                Class<?> clzSeasonHandler = Class.forName("sereneseasons.season.SeasonHandler");
+                Class<?> clzSeasonSavedData = Class.forName("sereneseasons.season.SeasonSavedData");
+                LOGGER.info("Found Serene Seasons classes, looking for methods");
+
+                getSeasonSavedData = clzSeasonHandler.getDeclaredMethod("getSeasonSavedData", Level.class);
+                getSeasonSavedData.setAccessible(true);
+
+                seasonCycleTicks = clzSeasonSavedData.getDeclaredField("seasonCycleTicks");
+                seasonCycleTicks.setAccessible(true);
+
+                markDirty = null;
+                try
+                {
+                    markDirty = clzSeasonSavedData.getMethod("setDirty");
+                }
+                catch(NoSuchMethodException ignored)
+                {
+                    try
+                    {
+                        markDirty = clzSeasonSavedData.getMethod("markDirty");
+                    }
+                    catch(NoSuchMethodException ignored1){}
+                }
+                if(markDirty != null)
+                {
+                    markDirty.setAccessible(true);
+                }
+                else
+                {
+                    LOGGER.warn("Could not resolve Serene Seasons dirty method, continuing without save dirty mark");
+                }
+
+                LOGGER.info("Found Serene Seasons methods! All ok!");
+                return true;
+            }
+            catch(ClassNotFoundException ignored){}
+            catch(NoSuchMethodException | NoSuchFieldException | IllegalAccessException | InvocationTargetException e)
+            {
+                LOGGER.error("Error getting Serene Seasons methods!", e);
+            }
+
+            return false;
+        }
+
+        @Override
+        boolean tickServer(MinecraftServer server, boolean isPaused)
+        {
+            if(!isPaused)
+            {
+                pausedSeasonTicks.clear();
+                return true;
+            }
+
+            try
+            {
+                for(ServerLevel level : server.getAllLevels())
+                {
+                    ResourceKey<Level> dimension = level.dimension();
+                    Object seasonSavedData = getSeasonSavedData.invoke(null, level);
+                    if(seasonSavedData == null)
+                    {
+                        pausedSeasonTicks.remove(dimension);
+                        continue;
+                    }
+
+                    int currentSeasonTicks = seasonCycleTicks.getInt(seasonSavedData);
+                    Integer frozenSeasonTicks = pausedSeasonTicks.get(dimension);
+
+                    if(frozenSeasonTicks == null)
+                    {
+                        pausedSeasonTicks.put(dimension, currentSeasonTicks);
+                        continue;
+                    }
+
+                    if(currentSeasonTicks != frozenSeasonTicks)
+                    {
+                        seasonCycleTicks.setInt(seasonSavedData, frozenSeasonTicks);
+                        if(markDirty != null)
+                        {
+                            markDirty.invoke(seasonSavedData);
+                        }
+                    }
+                }
+
+                return true;
+            }
+            catch(IllegalAccessException | InvocationTargetException e)
+            {
+                LOGGER.error("Error ticking for Serene Seasons compatibility", e);
+                return false;
+            }
         }
     }
 }
